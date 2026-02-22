@@ -35,9 +35,11 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const ScanHistorySchema = new mongoose_1.Schema({
-    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true },
+    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: false },
     imageUrl: { type: String, required: true }, // URL after uploading to cloud storage or local path
     classificationResult: {
+        itemName: { type: String },
+        isWaste: { type: Boolean, default: true },
         category: {
             type: String,
             enum: ['Recyclable', 'Compost', 'E-Waste', 'Landfill', 'Special', 'Unknown'],

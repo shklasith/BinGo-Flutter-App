@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { registerUser, getProfile, getLeaderboard } from '../controllers/user.controller';
+import { registerUser, loginUser, getProfile, getLeaderboard } from '../controllers/user.controller';
 
 const router = Router();
 
 router.post('/register', registerUser as any);
+router.post('/login', loginUser as any);
 router.get('/leaderboard', getLeaderboard as any);
 router.get('/:id', getProfile as any);
 

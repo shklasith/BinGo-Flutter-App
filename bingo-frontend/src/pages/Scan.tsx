@@ -9,16 +9,23 @@ export default function Scan() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleCapture = async (file: File) => {
+        const storedUser = localStorage.getItem('user');
+        if (!storedUser) {
+            navigate('/login');
+            return;
+        }
+        const user = JSON.parse(storedUser);
+        
         setIsScanning(true);
         try {
             // Create FormData to send the image
             const formData = new FormData();
             formData.append('image', file);
-            // Hardcode a dummy user ID for the prototype
-            formData.append('userId', '65f1a2b3c4d5e6f7a8b9c0d1');
+            // Use the real logged-in user ID
+            formData.append('userId', user._id);
 
             // Send to backend API
-            const response = await axios.post('http://localhost:5000/api/scan', formData, {
+            const response = await axios.post('/api/scan', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -112,6 +119,7 @@ export default function Scan() {
             <input
                 type="file"
                 accept="image/*"
+                capture="environment"
                 className="hidden"
                 ref={fileInputRef}
                 onChange={handleFileChange}

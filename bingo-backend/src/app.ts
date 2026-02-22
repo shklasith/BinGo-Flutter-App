@@ -21,6 +21,10 @@ app.use(morgan('dev'));
 import path from 'path';
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+// Serve frontend static files
+const frontendPath = path.join(__dirname, '../../bingo-frontend/dist');
+app.use(express.static(frontendPath));
+
 // Mount routes
 app.use('/api/scan', scanRoutes);
 app.use('/api/users', userRoutes);
@@ -30,6 +34,15 @@ app.use('/api/education', educationRoutes);
 // Basic route for health check
 app.get('/health', (req: Request, res: Response) => {
     res.status(200).json({ status: 'OK', message: 'BinGo API is running' });
+});
+
+// Catch-all route for Frontend SPA
+app.use((req: Request, res: Response) => {
+    // Skip if it's an API call or other reserved paths
+    if (req.path.startsWith('/api') || req.path.startsWith('/health') || req.path.startsWith('/uploads')) {
+        return res.status(404).json({ message: 'Not Found' });
+    }
+    res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // Error handling middleware

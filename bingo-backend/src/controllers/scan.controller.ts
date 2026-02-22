@@ -9,9 +9,11 @@ export const scanWaste = async (req: Request, res: Response) => {
     try {
         // Assume user is attached to req by auth middleware
         // For testing, just take any userId from body or create dummy
-        const userId = req.body.userId || req.query.userId;
+        let userId = req.body.userId || req.query.userId;
+        
+        // If no userId, use a dummy one for the prototype
         if (!userId) {
-            return res.status(401).json({ success: false, message: 'Unauthorized' });
+            userId = '65f1a2b3c4d5e6f7a8b9c0d1';
         }
 
         if (!req.file) {

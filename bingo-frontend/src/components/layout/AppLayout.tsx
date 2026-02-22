@@ -27,14 +27,14 @@ const NavItem = ({ to, icon: Icon, label }: { to: string, icon: LucideIcon, labe
 
 export default function AppLayout() {
     return (
-        <div className="flex flex-col h-screen max-w-md mx-auto bg-white shadow-2xl overflow-hidden relative">
+        <div className="flex flex-col h-[100dvh] w-full bg-white relative overflow-hidden">
             {/* Main Content Area */}
-            <main className="flex-1 overflow-y-auto pb-16">
+            <main className="flex-1 overflow-y-auto pb-20">
                 <Outlet />
             </main>
 
             {/* Bottom Navigation Bar */}
-            <nav className="absolute bottom-0 w-full h-16 bg-white border-t border-gray-100 flex justify-around items-center px-2 z-50 rounded-t-2xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-100 flex justify-around items-center px-2 z-50 rounded-t-2xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] safe-area-bottom">
                 <NavItem to="/" icon={Home} label="Home" />
                 <NavItem to="/map" icon={MapPin} label="Map" />
 

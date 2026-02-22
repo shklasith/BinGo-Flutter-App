@@ -1,7 +1,41 @@
+import { useState, useEffect } from 'react';
 import { Leaf, Navigation, Bell, Search, Trophy, Package, Battery, GlassWater } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Home() {
+    const navigate = useNavigate();
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (!storedUser) {
+            navigate('/login');
+            return;
+        }
+
+        const fetchUserData = async () => {
+            try {
+                const userData = JSON.parse(storedUser);
+                const response = await axios.get(`/api/users/${userData._id}`);
+                if (response.data.success) {
+                    setUser(response.data.data);
+                    localStorage.setItem('user', JSON.stringify(response.data.data));
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, [navigate]);
+
+    if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    if (!user) return null;
+
     return (
         <div className="flex flex-col min-h-screen bg-gray-50 pb-20">
             {/* Header section with gradient */}
@@ -13,7 +47,7 @@ export default function Home() {
                         </div>
                         <div>
                             <p className="text-green-50 text-sm font-medium">Good Morning,</p>
-                            <h2 className="text-white font-bold text-xl">Eco Warrior</h2>
+                            <h2 className="text-white font-bold text-xl">{user.username}</h2>
                         </div>
                     </div>
                     <button className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md text-white">
@@ -40,7 +74,7 @@ export default function Home() {
                     <div className="flex justify-between items-end">
                         <div>
                             <p className="text-gray-500 text-sm font-medium mb-1">Your Impact</p>
-                            <h3 className="text-3xl font-bold text-gray-900">4,250 <span className="text-sm text-primary font-semibold">pts</span></h3>
+                            <h3 className="text-3xl font-bold text-gray-900">{user.points.toLocaleString()} <span className="text-sm text-primary font-semibold">pts</span></h3>
                         </div>
                         <div className="flex -space-x-2">
                             <div className="w-8 h-8 rounded-full bg-green-100 border-2 border-white flex items-center justify-center"><Leaf className="w-4 h-4 text-primary" /></div>
@@ -52,17 +86,17 @@ export default function Home() {
                     <div className="flex gap-4 mt-4 pt-4 border-t border-gray-50">
                         <div className="flex-1">
                             <p className="text-xs text-gray-400 font-medium">Plastic Diverted</p>
-                            <p className="text-sm font-bold text-gray-800 mt-1">12 kg</p>
+                            <p className="text-sm font-bold text-gray-800 mt-1">{user.impactStats.plasticDiverted} kg</p>
                         </div>
                         <div className="w-px bg-gray-100"></div>
                         <div className="flex-1">
                             <p className="text-xs text-gray-400 font-medium">CO2 Reduced</p>
-                            <p className="text-sm font-bold text-gray-800 mt-1">5.2 kg</p>
+                            <p className="text-sm font-bold text-gray-800 mt-1">{user.impactStats.co2Reduced} kg</p>
                         </div>
                         <div className="w-px bg-gray-100"></div>
                         <div className="flex-1">
                             <p className="text-xs text-gray-400 font-medium">Trees Saved</p>
-                            <p className="text-sm font-bold text-gray-800 mt-1">0.5</p>
+                            <p className="text-sm font-bold text-gray-800 mt-1">{user.impactStats.treesSaved}</p>
                         </div>
                     </div>
                 </div>

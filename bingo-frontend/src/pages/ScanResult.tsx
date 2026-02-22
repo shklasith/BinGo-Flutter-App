@@ -49,14 +49,27 @@ export default function ScanResult() {
                 </button>
 
                 {/* Prediction Badge */}
-                <div className={`absolute -bottom-6 right-6 ${theme.bg} text-white px-4 py-2 rounded-xl shadow-xl font-bold flex items-center gap-2`}>
-                    <CheckCircle2 className="w-5 h-5" />
-                    {classification.category} {(classification.confidence * 100).toFixed(0)}%
+                <div className={`absolute -bottom-6 right-6 ${theme.bg} text-white px-4 py-2 rounded-xl shadow-xl font-bold flex items-center gap-2 max-w-[70%]`}>
+                    <CheckCircle2 className="w-5 h-5 shrink-0" />
+                    <span className="truncate">{classification.itemName || classification.category}</span>
+                    <span className="shrink-0">{(classification.confidence * 100).toFixed(0)}%</span>
                 </div>
             </div>
 
             <div className="px-6 pt-10">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">{classification.category} Item</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-1">
+                    {classification.itemName || classification.category}
+                </h1>
+                <p className="text-gray-500 font-medium mb-4">{classification.category} Item</p>
+
+                {classification.isWaste === false && (
+                    <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-3 mb-6 flex items-start gap-3">
+                        <AlertTriangle className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
+                        <p className="text-xs text-yellow-700 font-medium leading-relaxed">
+                            This item is not typically considered waste. If you're discarding it, please follow the steps below.
+                        </p>
+                    </div>
+                )}
 
                 <div className={`inline-flex items-center gap-2 ${theme.lightBg} ${theme.color} font-bold px-3 py-1.5 rounded-lg text-sm mb-8`}>
                     <Icon className="w-4 h-4" />

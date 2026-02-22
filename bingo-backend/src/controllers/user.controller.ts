@@ -14,6 +14,22 @@ export const registerUser = async (req: Request, res: Response) => {
     }
 };
 
+export const loginUser = async (req: Request, res: Response) => {
+    try {
+        const { email, password } = req.body;
+        // In a real app, use bcrypt to compare passwordHash
+        const user = await User.findOne({ email });
+        
+        if (!user || user.passwordHash !== password) {
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+        }
+
+        res.status(200).json({ success: true, data: user });
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 export const getProfile = async (req: Request, res: Response) => {
     try {
         const userId = req.params.id;
