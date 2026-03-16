@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../domain/entities/scan_result.dart';
+import '../presentation/auth/login_screen.dart';
+import '../presentation/auth/signup_screen.dart';
 import '../presentation/centers/centers_screen.dart';
 import '../presentation/home/home_screen.dart';
 import '../presentation/leaderboard/leaderboard_screen.dart';
 import '../presentation/profile/profile_screen.dart';
-import '../presentation/register/register_screen.dart';
 import '../presentation/scan/scan_result_screen.dart';
 import '../presentation/scan/scan_screen.dart';
 import '../presentation/session/splash_screen.dart';
@@ -22,9 +23,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             const SplashScreen(),
       ),
       GoRoute(
-        path: '/register',
+        path: '/login',
         builder: (BuildContext context, GoRouterState state) =>
-            const RegisterScreen(),
+            const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/signup',
+        builder: (BuildContext context, GoRouterState state) =>
+            const SignupScreen(),
       ),
       GoRoute(
         path: '/home',

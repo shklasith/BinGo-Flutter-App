@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../presentation/shared/app_theme.dart';
 import 'router.dart';
 
 class BingoApp extends ConsumerWidget {
@@ -12,10 +13,7 @@ class BingoApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'BinGo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1B8A5A)),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.buildTheme(),
       routerConfig: router,
     );
   }

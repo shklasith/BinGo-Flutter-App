@@ -37,4 +37,23 @@ class AuthRepositoryImpl implements AuthRepository {
       throw mapDioException(error);
     }
   }
+
+  @override
+  Future<AppUser> login(String email, String password) async {
+    try {
+      final response = await _dio.post<Map<String, dynamic>>(
+        '/api/users/login',
+        data: <String, dynamic>{'email': email, 'password': password},
+      );
+
+      final envelope = ApiResponse<Map<String, dynamic>>.fromJson(
+        response.data ?? <String, dynamic>{},
+        (dynamic data) => data as Map<String, dynamic>,
+      );
+
+      return AppUserDto.fromJson(envelope.data).toEntity();
+    } on DioException catch (error) {
+      throw mapDioException(error);
+    }
+  }
 }
