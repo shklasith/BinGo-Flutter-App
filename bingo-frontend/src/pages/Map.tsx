@@ -1,54 +1,89 @@
-import { Map as MapIcon, Search, ListFilter } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { ListFilter, MapPin, Search } from 'lucide-react';
+
+import { api } from '../lib/api';
+
+interface Center {
+  _id: string;
+  name: string;
+  address: string;
+  acceptedMaterials: string[];
+}
+
+interface ApiEnvelope<T> {
+  success: boolean;
+  data: T;
+}
 
 export default function MapView() {
-    return (
-        <div className="flex flex-col h-full bg-gray-50 relative">
-            {/* Search Header overlay */}
-            <div className="absolute top-0 w-full z-10 p-4 pt-8">
-                <div className="flex gap-2">
-                    <div className="relative flex-1 opacity-95">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder="Search centers..."
-                            className="w-full bg-white rounded-full py-3.5 pl-12 pr-4 text-gray-800 shadow-lg border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/50"
-                        />
-                    </div>
-                    <button className="w-14 h-[52px] bg-white rounded-full flex items-center justify-center shadow-lg border border-gray-100 text-gray-600 opacity-95">
-                        <ListFilter className="w-5 h-5" />
-                    </button>
-                </div>
-            </div>
+  const [query, setQuery] = useState('');
+  const [centers, setCenters] = useState<Center[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-            {/* Map visual placeholder */}
-            <div className="flex-1 bg-blue-50 relative overflow-hidden">
-                {/* Placeholder for actual map canvas (like Leaflet or Google Maps) */}
-                <div className="absolute inset-0 pattern-grid-lg text-blue-100 opacity-50"></div>
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const response = await api.get<ApiEnvelope<Center[]>>('/api/centers/nearby', {
+          params: { lat: 6.9271, lng: 79.8612 },
+        });
+        setCenters(response.data.data);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Failed to load centers';
+        setError(message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-                {/* Fake Map Markers */}
-                <div className="absolute top-1/3 left-1/4">
-                    <div className="relative group cursor-pointer">
-                        <MapIcon className="w-10 h-10 text-primary drop-shadow-md z-10 relative" />
-                        <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-white px-3 py-1.5 rounded-lg shadow-xl font-bold text-sm text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                            City Eco Hub
-                        </div>
-                    </div>
-                </div>
+    void load();
+  }, []);
 
-                <div className="absolute top-1/2 right-1/4">
-                    <div className="relative group cursor-pointer">
-                        <MapIcon className="w-10 h-10 text-green-600 drop-shadow-md z-10 relative" />
-                    </div>
-                </div>
-            </div>
+  const filteredCenters = useMemo(
+    () =>
+      centers.filter((center) => center.name.toLowerCase().includes(query.toLowerCase())),
+    [centers, query],
+  );
 
-            {/* Bottom info panel */}
-            <div className="absolute bottom-20 w-full px-4 text-center">
-                <div className="bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-gray-50 inline-block w-full max-w-sm">
-                    <h3 className="font-bold text-gray-900 mb-1">2 Centers Near You</h3>
-                    <p className="text-sm text-gray-500">Tap a pin to see dropping rules</p>
-                </div>
-            </div>
+  return (
+    <div className="flex flex-col min-h-screen bg-gray-50 px-4 pt-8 pb-20">
+      <div className="flex gap-2 mb-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search centers..."
+            className="w-full bg-white rounded-full py-3.5 pl-12 pr-4 text-gray-800 shadow border border-gray-100 focus:outline-none"
+          />
         </div>
-    );
+        <button className="w-14 h-[52px] bg-white rounded-full flex items-center justify-center shadow border border-gray-100 text-gray-600">
+          <ListFilter className="w-5 h-5" />
+        </button>
+      </div>
+
+      {loading && <p className="text-gray-500">Loading centers...</p>}
+      {error && <p className="text-red-600">{error}</p>}
+
+      {!loading && !error && (
+        <div className="space-y-3">
+          {filteredCenters.map((center) => (
+            <div key={center._id} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-primary mt-0.5" />
+                <div>
+                  <h3 className="font-bold text-gray-900">{center.name}</h3>
+                  <p className="text-sm text-gray-500">{center.address}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Accepts: {center.acceptedMaterials.join(', ')}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
