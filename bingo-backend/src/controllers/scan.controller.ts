@@ -1,16 +1,14 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { analyzeWasteImage } from '../services/gemini.service';
 import ScanHistory from '../models/ScanHistory';
 import User from '../models/User';
-import fs from 'fs';
-import path from 'path';
+import fs from 'fs/promises';
+import { AuthRequest } from '../middleware/auth';
 
-export const scanWaste = async (req: Request, res: Response) => {
+export const scanWaste = async (req: AuthRequest, res: Response) => {
     try {
-        // Assume user is attached to req by auth middleware
-        // For testing, just take any userId from body or create dummy
-        const userId = req.body.userId || req.query.userId;
-        if (!userId) {
+        const user = req.user;
+        if (!user) {
             return res.status(401).json({ success: false, message: 'Unauthorized' });
         }
 
@@ -24,56 +22,59 @@ export const scanWaste = async (req: Request, res: Response) => {
         // 1. Send image to Gemini API
         const classification = await analyzeWasteImage(filePath, mimeType);
 
-        // 2. Clean up local uploaded file (in production would use cloud storage)
+        // 2. Clean up local uploaded file
         try {
-            fs.unlinkSync(filePath);
+            await fs.unlink(filePath);
         } catch (e) {
             console.warn("Failed to delete temp file:", e);
         }
 
         // 3. Award points based on classification
         let pointsToAward = 0;
-        if (classification.category !== 'Unknown' && classification.category !== 'Landfill') {
+        const category = classification.category;
+
+        if (category === 'Recyclable' || category === 'Compost' || category === 'E-Waste') {
             pointsToAward = 10;
-        } else if (classification.category === 'Landfill') {
-            pointsToAward = 2; // small points for trying to organize
+        } else if (category === 'Special') {
+            pointsToAward = 15;
+        } else if (category === 'Landfill') {
+            pointsToAward = 2;
         }
 
         // 4. Save scan to history
-        const scan = new ScanHistory({
-            userId,
-            imageUrl: 'local/' + req.file.filename, // placeholder url
+        const scan = await ScanHistory.create({
+            userId: user._id,
+            imageUrl: 'local/' + req.file.filename,
             classificationResult: classification,
             pointsEarned: pointsToAward
         });
-        await scan.save();
 
         // 5. Update User points and stats
-        const user = await User.findById(userId);
-        if (user) {
-            user.points += pointsToAward;
-            if (classification.category === 'Recyclable') {
-                user.impactStats.plasticDiverted += 1;
-                user.impactStats.co2Reduced += 0.5;
-            }
-            if (classification.category === 'Compost') {
-                user.impactStats.co2Reduced += 0.2;
-            }
-            await user.save();
+        user.points += pointsToAward;
+        
+        if (category === 'Recyclable') {
+            user.impactStats.plasticDiverted += 1;
+            user.impactStats.co2Reduced += 0.5;
+        } else if (category === 'Compost') {
+            user.impactStats.co2Reduced += 0.2;
+        } else if (category === 'E-Waste') {
+            user.impactStats.co2Reduced += 1.0;
         }
+        
+        await user.save();
 
-        // Return result
         res.status(200).json({
             success: true,
             data: {
                 classification,
                 pointsEarned: pointsToAward,
-                scanId: scan._id
+                scanId: scan._id,
+                newTotalPoints: user.points
             }
         });
 
     } catch (error: any) {
         console.error("Scan Controller Error:", error);
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
     }
 };

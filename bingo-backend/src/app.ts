@@ -29,7 +29,11 @@ app.use('/api/education', educationRoutes);
 
 // Basic route for health check
 app.get('/health', (req: Request, res: Response) => {
-    res.status(200).json({ status: 'OK', message: 'BinGo API is running' });
+    res.status(200).json({
+        success: true,
+        data: { status: 'OK' },
+        message: 'BinGo API is running'
+    });
 });
 
 // Error handling middleware
