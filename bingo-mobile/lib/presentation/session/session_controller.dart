@@ -18,6 +18,17 @@ class SessionController extends AsyncNotifier<String?> {
     state = AsyncData(userId);
   }
 
+  Future<void> setSession(String userId, String token) async {
+    final repository = ref.read(sessionRepositoryProvider);
+    await repository.setSession(userId, token);
+    state = AsyncData(userId);
+  }
+
+  Future<String?> getToken() async {
+    final repository = ref.read(sessionRepositoryProvider);
+    return repository.getToken();
+  }
+
   Future<void> clear() async {
     final repository = ref.read(sessionRepositoryProvider);
     await repository.clear();

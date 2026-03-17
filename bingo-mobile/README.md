@@ -12,19 +12,23 @@ Flutter mobile client for the BinGo backend.
 ## Backend API Contracts
 This app uses:
 - `POST /api/users/register`
+- `POST /api/users/login`
 - `GET /api/users/leaderboard`
 - `GET /api/users/:id`
-- `POST /api/scan` (multipart with `image` + `userId`)
+- `POST /api/scan` (multipart with `image`, JWT required)
 - `GET /api/centers/nearby`
 - `GET /api/education/daily-tip`
 - `GET /api/education/search`
 - `GET /health`
 
 ## Run
-1. Start backend on `http://localhost:5000`.
+1. API defaults to `https://qlony.com`.
 2. From this folder:
    - `flutter pub get`
-   - `flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5000`
+   - `flutter run`
+
+Optional local backend override:
+- `flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5000`
 
 For a physical Android device:
 - `flutter run --dart-define=API_BASE_URL=http://<your-lan-ip>:5000`
@@ -37,6 +41,6 @@ For a physical Android device:
 - `lib/app`: app bootstrap + router
 
 ## Notes
-- Auth is prototype mode: register and persist `userId` locally.
-- No backend login/JWT is required for current backend.
+- Auth persists `userId` and JWT token in secure storage.
+- Protected endpoints (`/api/users/:id`, `/api/scan`) require JWT.
 - Android permissions are configured for camera and location.

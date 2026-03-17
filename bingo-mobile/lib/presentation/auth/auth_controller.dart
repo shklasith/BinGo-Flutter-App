@@ -32,7 +32,9 @@ class LoginController extends AutoDisposeAsyncNotifier<AppUser?> {
           return value.requireValue;
         });
 
-    await ref.read(sessionControllerProvider.notifier).setUserId(user.id);
+    await ref
+        .read(sessionControllerProvider.notifier)
+        .setSession(user.id, user.token);
     state = AsyncData(user);
     return user;
   }
@@ -56,7 +58,9 @@ class SignupController extends AutoDisposeAsyncNotifier<AppUser?> {
           return value.requireValue;
         });
 
-    await ref.read(sessionControllerProvider.notifier).setUserId(user.id);
+    await ref
+        .read(sessionControllerProvider.notifier)
+        .setSession(user.id, user.token);
     state = AsyncData(user);
     return user;
   }

@@ -14,13 +14,13 @@ class ScanController extends AutoDisposeAsyncNotifier<ScanResult?> {
   @override
   Future<ScanResult?> build() async => null;
 
-  Future<ScanResult> submit(File imageFile, String userId) async {
+  Future<ScanResult> submit(File imageFile) async {
     state = const AsyncLoading();
     final repository = ref.read(scanRepositoryProvider);
 
     final result =
         await AsyncValue.guard(
-          () => repository.scanImage(imageFile, userId),
+          () => repository.scanImage(imageFile),
         ).then((AsyncValue<ScanResult> value) {
           if (value.hasError) {
             throw value.error!;

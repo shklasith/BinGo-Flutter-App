@@ -1,14 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
 import '../env/app_env.dart';
 import '../errors/api_exception.dart';
+import '../session/session_keys.dart';
 
 final loggerProvider = Provider<Logger>((ref) => Logger());
 
 final dioProvider = Provider<Dio>((ref) {
   final logger = ref.watch(loggerProvider);
+  const storage = FlutterSecureStorage();
 
   final dio = Dio(
     BaseOptions(
@@ -22,7 +25,11 @@ final dioProvider = Provider<Dio>((ref) {
 
   dio.interceptors.add(
     InterceptorsWrapper(
-      onRequest: (options, handler) {
+      onRequest: (options, handler) async {
+        final token = await storage.read(key: sessionTokenKey);
+        if (token != null && token.isNotEmpty) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
         logger.i('REQ ${options.method} ${options.uri}');
         handler.next(options);
       },

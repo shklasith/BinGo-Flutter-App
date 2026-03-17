@@ -14,12 +14,11 @@ class ScanRepositoryImpl implements ScanRepository {
   final Dio _dio;
 
   @override
-  Future<ScanResult> scanImage(File file, String userId) async {
+  Future<ScanResult> scanImage(File file) async {
     try {
       final fileName = file.path.split('/').last;
       final formData = FormData.fromMap(<String, dynamic>{
         'image': await MultipartFile.fromFile(file.path, filename: fileName),
-        'userId': userId,
       });
 
       final response = await _dio.post<Map<String, dynamic>>(

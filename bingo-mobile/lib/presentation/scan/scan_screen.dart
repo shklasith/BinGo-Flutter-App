@@ -38,7 +38,8 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
     }
 
     final userId = await ref.read(sessionControllerProvider.future);
-    if (userId == null || userId.isEmpty) {
+    final token = await ref.read(sessionControllerProvider.notifier).getToken();
+    if (userId == null || userId.isEmpty || token == null || token.isEmpty) {
       if (!mounted) {
         return;
       }
@@ -53,7 +54,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
     try {
       final ScanResult result = await ref
           .read(scanControllerProvider.notifier)
-          .submit(image, userId);
+          .submit(image);
       if (!mounted) {
         return;
       }
