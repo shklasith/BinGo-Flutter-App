@@ -1,58 +1,108 @@
 import { Request, Response } from 'express';
-import User from '../models/User';
 
-// Dummy register for testing
+import { AuthRequest } from '../middleware/auth';
+import User from '../models/User';
+import generateToken from '../utils/generateToken';
+
 export const registerUser = async (req: Request, res: Response) => {
     try {
         const { username, email, password } = req.body;
-        // Skipping hash for simplicity in this prototype
-        const user = new User({ username, email, passwordHash: password });
-        await user.save();
-        res.status(201).json({ success: true, data: user });
+
+        const userExists = await User.findOne({ $or: [{ email }, { username }] });
+        if (userExists) {
+            return res.status(400).json({ success: false, message: 'User already exists' });
+        }
+
+        const user = await User.create({
+            username,
+            email,
+            passwordHash: password
+        });
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid user data' });
+        }
+
+        return res.status(201).json({
+            success: true,
+            data: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                points: user.points,
+                token: generateToken(String(user._id))
+            }
+        });
     } catch (error: any) {
-        res.status(400).json({ success: false, message: error.message });
+        return res.status(400).json({ success: false, message: error.message });
     }
 };
 
 export const loginUser = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
-        // In a real app, use bcrypt to compare passwordHash
         const user = await User.findOne({ email });
-        
-        if (!user || user.passwordHash !== password) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+
+        if (user && (await user.comparePassword(password))) {
+            return res.status(200).json({
+                success: true,
+                data: {
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    points: user.points,
+                    token: generateToken(String(user._id))
+                }
+            });
         }
 
-        res.status(200).json({ success: true, data: user });
+        return res.status(401).json({ success: false, message: 'Invalid email or password' });
     } catch (error: any) {
-        res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 };
 
-export const getProfile = async (req: Request, res: Response) => {
+export const getProfile = async (req: AuthRequest, res: Response) => {
     try {
-        const userId = req.params.id;
-        const user = await User.findById(userId).select('-passwordHash');
+        const user = req.user;
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
-        res.status(200).json({ success: true, data: user });
+
+        return res.status(200).json({ success: true, data: user });
     } catch (error: any) {
-        res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 };
 
-export const getLeaderboard = async (req: Request, res: Response) => {
+export const getUserById = async (req: AuthRequest, res: Response) => {
     try {
-        // Simple leaderboard sorted by points descending
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+
+        const { userId } = req.params;
+        const user = await User.findById(userId).select('-passwordHash');
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        return res.status(200).json({ success: true, data: user });
+    } catch (error: any) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+export const getLeaderboard = async (_req: Request, res: Response) => {
+    try {
         const users = await User.find()
             .select('username points badges impactStats')
             .sort({ points: -1 })
             .limit(10);
 
-        res.status(200).json({ success: true, data: users });
+        return res.status(200).json({ success: true, data: users });
     } catch (error: any) {
-        res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 };

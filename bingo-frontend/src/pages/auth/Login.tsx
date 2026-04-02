@@ -1,29 +1,45 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { FormEvent, useState } from 'react';
 import { Leaf } from 'lucide-react';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { api } from '../../lib/api';
+import { setSession } from '../../lib/session';
+
+interface AuthUser {
+    _id: string;
+    token: string;
+}
+
+interface ApiEnvelope<T> {
+    success: boolean;
+    data: T;
+}
 
 export default function Login() {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    });
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         setLoading(true);
-        setError('');
+        setError(null);
+
         try {
-            const response = await axios.post('/api/users/login', formData);
+            const response = await api.post<ApiEnvelope<AuthUser>>('/api/users/login', {
+                email,
+                password
+            });
+
             if (response.data.success) {
-                localStorage.setItem('user', JSON.stringify(response.data.data));
+                setSession({ userId: response.data.data._id, token: response.data.data.token });
                 navigate('/');
             }
-        } catch (err: any) {
-            setError(err.response?.data?.message || 'Invalid email or password');
+        } catch (submitError) {
+            const message = submitError instanceof Error ? submitError.message : 'Invalid email or password';
+            setError(message);
         } finally {
             setLoading(false);
         }
@@ -32,7 +48,6 @@ export default function Login() {
     return (
         <div className="flex flex-col min-h-screen bg-white max-w-md mx-auto relative px-6 py-12">
             <div className="flex-1 flex flex-col justify-center">
-                {/* Logo and Header */}
                 <div className="flex flex-col items-center mb-10">
                     <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                         <Leaf className="w-10 h-10 text-primary" />
@@ -41,7 +56,6 @@ export default function Login() {
                     <p className="text-gray-500 mt-2 text-center">Smart recycling starts with you.</p>
                 </div>
 
-                {/* Login Form */}
                 <form className="space-y-4 w-full" onSubmit={handleSubmit}>
                     {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                     <div>
@@ -51,8 +65,8 @@ export default function Login() {
                             required
                             className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-gray-50"
                             placeholder="Enter your email"
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            value={email}
+                            onChange={(event) => setEmail(event.target.value)}
                         />
                     </div>
 
@@ -66,8 +80,8 @@ export default function Login() {
                             required
                             className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-gray-50"
                             placeholder="Enter your password"
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            value={password}
+                            onChange={(event) => setPassword(event.target.value)}
                         />
                     </div>
 
@@ -82,7 +96,7 @@ export default function Login() {
 
                 <div className="mt-8 text-center">
                     <p className="text-gray-500">
-                        Don't have an account?{' '}
+                        Don&apos;t have an account?{' '}
                         <Link to="/signup" className="text-primary font-semibold hover:underline">
                             Sign Up
                         </Link>
@@ -92,4 +106,3 @@ export default function Login() {
         </div>
     );
 }
-

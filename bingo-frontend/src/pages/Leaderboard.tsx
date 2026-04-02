@@ -1,29 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Trophy } from 'lucide-react';
-import axios from 'axios';
+
+import { api } from '../lib/api';
+
+interface LeaderboardUser {
+    _id: string;
+    username: string;
+    points: number;
+}
+
+interface ApiEnvelope<T> {
+    success: boolean;
+    data: T;
+}
 
 export default function Leaderboard() {
-    const [leaderData, setLeaderData] = useState<any[]>([]);
+    const [leaderData, setLeaderData] = useState<LeaderboardUser[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchLeaderboard = async () => {
             try {
-                const response = await axios.get('/api/users/leaderboard');
+                const response = await api.get<ApiEnvelope<LeaderboardUser[]>>('/api/users/leaderboard');
                 if (response.data.success) {
                     setLeaderData(response.data.data);
                 }
-            } catch (error) {
-                console.error("Error fetching leaderboard:", error);
+            } catch (loadError) {
+                const message = loadError instanceof Error ? loadError.message : 'Failed to load leaderboard';
+                setError(message);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchLeaderboard();
+        void fetchLeaderboard();
     }, []);
 
-    if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    if (loading) {
+        return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    }
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
@@ -31,9 +47,7 @@ export default function Leaderboard() {
                 <h1 className="text-2xl font-bold text-white mb-2">Leaderboard</h1>
                 <p className="text-green-100 text-sm">Top recylers in your area</p>
 
-                {/* Top 3 Podium (visual) */}
                 <div className="flex justify-center items-end gap-4 mt-8 h-32 relative z-10">
-                    {/* 2nd Place */}
                     {leaderData[1] && (
                         <div className="flex flex-col items-center">
                             <div className="w-12 h-12 bg-white rounded-full border-4 border-slate-300 flex items-center justify-center shadow-lg -mb-6 z-20">
@@ -44,7 +58,6 @@ export default function Leaderboard() {
                             </div>
                         </div>
                     )}
-                    {/* 1st Place */}
                     {leaderData[0] && (
                         <div className="flex flex-col items-center">
                             <div className="w-16 h-16 bg-white rounded-full border-4 border-yellow-400 flex items-center justify-center shadow-lg shadow-yellow-400/20 -mb-8 z-20">
@@ -55,7 +68,6 @@ export default function Leaderboard() {
                             </div>
                         </div>
                     )}
-                    {/* 3rd Place */}
                     {leaderData[2] && (
                         <div className="flex flex-col items-center">
                             <div className="w-12 h-12 bg-white rounded-full border-4 border-amber-600 flex items-center justify-center shadow-lg -mb-6 z-20">
@@ -70,6 +82,7 @@ export default function Leaderboard() {
             </div>
 
             <div className="px-6 -mt-8 relative z-20">
+                {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
                 <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden mb-8">
                     {leaderData.map((user, idx) => (
                         <div key={user._id} className={`flex items-center justify-between p-4 ${idx !== leaderData.length - 1 ? 'border-b border-gray-50' : ''}`}>
@@ -101,4 +114,3 @@ export default function Leaderboard() {
 function UserAvatar({ name }: { name: string }) {
     return <span className="font-bold">{name?.charAt(0) || '?'}</span>;
 }
-

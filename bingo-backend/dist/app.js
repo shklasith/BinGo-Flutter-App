@@ -31,7 +31,11 @@ app.use('/api/centers', center_routes_1.default);
 app.use('/api/education', education_routes_1.default);
 // Basic route for health check
 app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'OK', message: 'BinGo API is running' });
+    res.status(200).json({
+        success: true,
+        data: { status: 'OK' },
+        message: 'BinGo API is running'
+    });
 });
 // Catch-all route for Frontend SPA
 app.use((req, res) => {

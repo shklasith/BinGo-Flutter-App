@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { scanWaste } from '../controllers/scan.controller';
+import { protect } from '../middleware/auth';
 import multer from 'multer';
 import path from 'path';
 
@@ -24,6 +25,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // POST /api/scan
-router.post('/', upload.single('image'), scanWaste as any);
+router.post('/', protect, upload.single('image'), scanWaste as any);
 
 export default router;

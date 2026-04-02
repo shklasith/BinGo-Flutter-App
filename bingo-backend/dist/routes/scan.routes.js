@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const scan_controller_1 = require("../controllers/scan.controller");
+const auth_1 = require("../middleware/auth");
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const router = (0, express_1.Router)();
@@ -25,5 +26,5 @@ const storage = multer_1.default.diskStorage({
 });
 const upload = (0, multer_1.default)({ storage });
 // POST /api/scan
-router.post('/', upload.single('image'), scan_controller_1.scanWaste);
+router.post('/', auth_1.protect, upload.single('image'), scan_controller_1.scanWaste);
 exports.default = router;

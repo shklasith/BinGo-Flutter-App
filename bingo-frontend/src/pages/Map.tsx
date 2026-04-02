@@ -1,40 +1,69 @@
-import { useState, useEffect } from 'react';
-import { Map as MapIcon, Search, ListFilter } from 'lucide-react';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { ListFilter, Map as MapIcon, Search } from 'lucide-react';
+
+import { api } from '../lib/api';
+
+interface Center {
+    _id: string;
+    name: string;
+    address: string;
+    acceptedMaterials: string[];
+}
+
+interface ApiEnvelope<T> {
+    success: boolean;
+    data: T;
+}
 
 export default function MapView() {
-    const [centers, setCenters] = useState<any[]>([]);
+    const [query, setQuery] = useState('');
+    const [centers, setCenters] = useState<Center[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchCenters = async () => {
             try {
-                // For prototype, using fixed coords if geolocation fails
-                const lat = 0; 
-                const lng = 0;
-                const response = await axios.get(`/api/centers/nearby?lat=${lat}&lng=${lng}`);
+                const response = await api.get<ApiEnvelope<Center[]>>('/api/centers/nearby', {
+                    params: { lat: 6.9271, lng: 79.8612 }
+                });
                 if (response.data.success) {
                     setCenters(response.data.data);
                 }
-            } catch (error) {
-                console.error("Error fetching centers:", error);
+            } catch (loadError) {
+                const message = loadError instanceof Error ? loadError.message : 'Failed to load centers';
+                setError(message);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchCenters();
+        void fetchCenters();
     }, []);
+
+    const filteredCenters = centers.filter((center) => {
+        const value = query.trim().toLowerCase();
+        if (!value) {
+            return true;
+        }
+
+        return (
+            center.name.toLowerCase().includes(value) ||
+            center.address.toLowerCase().includes(value) ||
+            center.acceptedMaterials.some((material) => material.toLowerCase().includes(value))
+        );
+    });
 
     return (
         <div className="flex flex-col h-full bg-gray-50 relative">
-            {/* Search Header overlay */}
             <div className="absolute top-0 w-full z-10 p-4 pt-8">
                 <div className="flex gap-2">
                     <div className="relative flex-1 opacity-95">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input
                             type="text"
+                            value={query}
+                            onChange={(event) => setQuery(event.target.value)}
                             placeholder="Search centers..."
                             className="w-full bg-white rounded-full py-3.5 pl-12 pr-4 text-gray-800 shadow-lg border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/50"
                         />
@@ -45,19 +74,16 @@ export default function MapView() {
                 </div>
             </div>
 
-            {/* Map visual placeholder */}
-            <div className="flex-1 bg-blue-50 relative overflow-hidden">
-                {/* Placeholder for actual map canvas (like Leaflet or Google Maps) */}
-                <div className="absolute inset-0 pattern-grid-lg text-blue-100 opacity-50"></div>
+            <div className="flex-1 bg-gradient-to-br from-[#e0f7ef] to-[#d8ebff] relative overflow-hidden">
+                <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
 
-                {/* Markers for real centers */}
-                {centers.map((center, idx) => (
-                    <div 
-                        key={center._id} 
+                {filteredCenters.map((center, idx) => (
+                    <div
+                        key={center._id}
                         className="absolute"
-                        style={{ 
-                            top: `${30 + (idx * 15)}%`, 
-                            left: `${20 + (idx * 25)}%` 
+                        style={{
+                            top: `${30 + (idx * 15)}%`,
+                            left: `${20 + (idx * 25)}%`
                         }}
                     >
                         <div className="relative group cursor-pointer">
@@ -69,18 +95,29 @@ export default function MapView() {
                     </div>
                 ))}
 
-                {centers.length === 0 && !loading && (
+                {loading && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <p className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-gray-500 font-medium">No centers found. Try seeding the database.</p>
+                        <p className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-gray-500 font-medium">Loading centers...</p>
+                    </div>
+                )}
+
+                {error && !loading && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <p className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-red-600 font-medium">{error}</p>
+                    </div>
+                )}
+
+                {!loading && !error && filteredCenters.length === 0 && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <p className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-gray-500 font-medium">No centers found for that search.</p>
                     </div>
                 )}
             </div>
 
-            {/* Bottom info panel */}
             <div className="absolute bottom-20 w-full px-4 text-center">
                 <div className="bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-gray-50 inline-block w-full max-w-sm">
                     <h3 className="font-bold text-gray-900 mb-1">
-                        {loading ? 'Searching...' : `${centers.length} Centers Near You`}
+                        {loading ? 'Searching...' : `${filteredCenters.length} Centers Near You`}
                     </h3>
                     <p className="text-sm text-gray-500">Tap a pin to see dropping rules</p>
                 </div>
@@ -88,4 +125,3 @@ export default function MapView() {
         </div>
     );
 }
-
