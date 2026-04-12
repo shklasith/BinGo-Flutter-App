@@ -1,0 +1,37 @@
+name: bingo_app
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.10.7 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI
+  cupertino_icons: ^1.0.8
+
+  # Routing
+  go_router: ^13.2.0
+
+  # Local storage
+  shared_preferences: ^2.2.2
+
+  # HTTP requests
+  http: ^1.2.1
+
+  # Image picker for camera & gallery
+  image_picker: ^1.0.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
