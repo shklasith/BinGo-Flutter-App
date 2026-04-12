@@ -23,7 +23,10 @@ final sessionRepositoryProvider = Provider<SessionRepository>(
 );
 
 final settingsRepositoryProvider = Provider<SettingsRepository>(
-  (ref) => SettingsRepositoryImpl(ref.watch(secureStorageProvider)),
+  (ref) => SettingsRepositoryImpl(
+    ref.watch(secureStorageProvider),
+    ref.watch(dioProvider),
+  ),
 );
 
 final authRepositoryProvider = Provider<AuthRepository>(

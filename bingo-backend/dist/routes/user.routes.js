@@ -8,5 +8,7 @@ router.post('/register', user_controller_1.registerUser);
 router.post('/login', user_controller_1.loginUser);
 router.get('/leaderboard', user_controller_1.getLeaderboard);
 router.get('/profile', auth_1.protect, user_controller_1.getProfile);
+router.get('/settings', auth_1.protect, user_controller_1.getUserSettings);
+router.patch('/settings', auth_1.protect, user_controller_1.updateUserSettings);
 router.get('/:userId', auth_1.protect, user_controller_1.getUserById);
 exports.default = router;

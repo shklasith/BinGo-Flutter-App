@@ -9,11 +9,41 @@ import 'settings_controller.dart';
 
 const String appVersionLabel = '1.0.0+1';
 
-class SettingsScreen extends ConsumerWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  late final ProviderSubscription<String?> _feedbackSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _feedbackSubscription = ref.listenManual<String?>(
+      settingsFeedbackProvider,
+      (previous, next) {
+        if (next == null || !mounted) {
+          return;
+        }
+
+        final messenger = ScaffoldMessenger.maybeOf(context);
+        messenger?.showSnackBar(SnackBar(content: Text(next)));
+        ref.read(settingsControllerProvider.notifier).clearFeedback();
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _feedbackSubscription.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final settingsAsync = ref.watch(settingsControllerProvider);
     final profileAsync = ref.watch(profileProvider);
 

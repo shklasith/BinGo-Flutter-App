@@ -7,6 +7,11 @@ export interface IUser extends Document {
     passwordHash: string;
     points: number;
     badges: string[];
+    settings: {
+        darkMode: boolean;
+        scanReminders: boolean;
+        recyclingTips: boolean;
+    };
     impactStats: {
         treesSaved: number;
         plasticDiverted: number;
@@ -24,6 +29,11 @@ const UserSchema: Schema<IUser> = new Schema(
         passwordHash: { type: String, required: true },
         points: { type: Number, default: 0 },
         badges: [{ type: String }],
+        settings: {
+            darkMode: { type: Boolean, default: false },
+            scanReminders: { type: Boolean, default: true },
+            recyclingTips: { type: Boolean, default: true },
+        },
         impactStats: {
             treesSaved: { type: Number, default: 0 },
             plasticDiverted: { type: Number, default: 0 },

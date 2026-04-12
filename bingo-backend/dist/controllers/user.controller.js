@@ -3,9 +3,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLeaderboard = exports.getUserById = exports.getProfile = exports.loginUser = exports.registerUser = void 0;
+exports.updateUserSettings = exports.getUserSettings = exports.getLeaderboard = exports.getUserById = exports.getProfile = exports.loginUser = exports.registerUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const generateToken_1 = __importDefault(require("../utils/generateToken"));
+const defaultSettings = {
+    darkMode: false,
+    scanReminders: true,
+    recyclingTips: true,
+};
+const allowedSettingsKeys = ['darkMode', 'scanReminders', 'recyclingTips'];
+const normalizeSettings = (settings) => ({
+    darkMode: settings?.darkMode ?? defaultSettings.darkMode,
+    scanReminders: settings?.scanReminders ?? defaultSettings.scanReminders,
+    recyclingTips: settings?.recyclingTips ?? defaultSettings.recyclingTips,
+});
 // Register a new user
 const registerUser = async (req, res) => {
     try {
@@ -17,7 +28,8 @@ const registerUser = async (req, res) => {
         const user = await User_1.default.create({
             username,
             email,
-            passwordHash: password // This will be hashed by the pre-save hook
+            passwordHash: password, // This will be hashed by the pre-save hook
+            settings: defaultSettings,
         });
         if (user) {
             res.status(201).json({
@@ -112,3 +124,57 @@ const getLeaderboard = async (req, res) => {
     }
 };
 exports.getLeaderboard = getLeaderboard;
+const getUserSettings = async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+        return res.status(200).json({
+            success: true,
+            data: normalizeSettings(req.user.settings),
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+exports.getUserSettings = getUserSettings;
+const updateUserSettings = async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+        const updates = req.body;
+        const keys = Object.keys(updates);
+        const unknownKeys = keys.filter((key) => !allowedSettingsKeys.includes(key));
+        if (unknownKeys.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Unknown settings fields: ${unknownKeys.join(', ')}`,
+            });
+        }
+        for (const key of keys) {
+            if (typeof updates[key] !== 'boolean') {
+                return res.status(400).json({
+                    success: false,
+                    message: `${key} must be a boolean`,
+                });
+            }
+        }
+        const currentSettings = normalizeSettings(req.user.settings);
+        const nextSettings = {
+            ...currentSettings,
+            ...updates,
+        };
+        req.user.settings = nextSettings;
+        await req.user.save();
+        return res.status(200).json({
+            success: true,
+            data: normalizeSettings(req.user.settings),
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+};
+exports.updateUserSettings = updateUserSettings;

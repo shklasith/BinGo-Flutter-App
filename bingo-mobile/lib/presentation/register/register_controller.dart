@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/repositories/repository_providers.dart';
 import '../../domain/entities/app_user.dart';
+import '../settings/settings_controller.dart';
 import '../session/session_controller.dart';
 
 final registerControllerProvider =
@@ -34,6 +35,7 @@ class RegisterController extends AutoDisposeAsyncNotifier<AppUser?> {
     await ref
         .read(sessionControllerProvider.notifier)
         .setSession(user.id, user.token);
+    ref.invalidate(settingsControllerProvider);
     state = AsyncData(user);
     return user;
   }
