@@ -1,0 +1,39 @@
+name: bingo_app
+description: "A recycling assistant Flutter application."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # Navigation
+  go_router: ^14.2.0
+
+  # HTTP requests (API calls)
+  http: ^1.2.2
+
+  # Pick images from camera or gallery
+  image_picker: ^1.1.2
+
+  # Google Maps (optional for recycling centers)
+  google_maps_flutter: ^2.6.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
