@@ -34,10 +34,11 @@ const upload = (0, multer_1.default)({ storage });
  *     summary: Scan a waste image
  *     description: >
  *       Uploads an image of waste, classifies it using the Gemini AI service,
- *       awards points based on the waste category, and updates the user's impact stats.
+ *       awards points for signed-in users, and returns classification-only results for guests.
  *       **Categories & Points:** Recyclable/Compost/E-Waste → 10 pts, Special → 15 pts, Landfill → 2 pts.
  *     security:
  *       - bearerAuth: []
+ *       - {}
  *     requestBody:
  *       required: true
  *       content:
@@ -95,5 +96,5 @@ const upload = (0, multer_1.default)({ storage });
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/', auth_1.protect, upload.single('image'), scan_controller_1.scanWaste);
+router.post('/', auth_1.optionalProtect, upload.single('image'), scan_controller_1.scanWaste);
 exports.default = router;

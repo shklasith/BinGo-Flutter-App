@@ -9,15 +9,13 @@ const ScanHistory_1 = __importDefault(require("../models/ScanHistory"));
 const gemini_service_1 = require("../services/gemini.service");
 const scanWaste = async (req, res) => {
     try {
-        const user = req.user;
-        if (!user) {
-            return res.status(401).json({ success: false, message: 'Unauthorized' });
-        }
         if (!req.file) {
             return res.status(400).json({ success: false, message: 'No image provided' });
         }
+        const user = req.user;
         const filePath = req.file.path;
         const mimeType = req.file.mimetype;
+        const filename = req.file.filename;
         const classification = await (0, gemini_service_1.analyzeWasteImage)(filePath, mimeType);
         try {
             await promises_1.default.unlink(filePath);
@@ -36,31 +34,40 @@ const scanWaste = async (req, res) => {
         else if (category === 'Landfill') {
             pointsToAward = 2;
         }
-        const scan = await ScanHistory_1.default.create({
-            userId: user._id,
-            imageUrl: `local/${req.file.filename}`,
-            classificationResult: classification,
-            pointsEarned: pointsToAward
-        });
-        user.points += pointsToAward;
-        if (category === 'Recyclable') {
-            user.impactStats.plasticDiverted += 1;
-            user.impactStats.co2Reduced += 0.5;
+        let scanId = null;
+        let newTotalPoints = null;
+        if (user) {
+            const scan = await ScanHistory_1.default.create({
+                userId: user._id,
+                imageUrl: `local/${filename}`,
+                classificationResult: classification,
+                pointsEarned: pointsToAward
+            });
+            user.points += pointsToAward;
+            if (category === 'Recyclable') {
+                user.impactStats.plasticDiverted += 1;
+                user.impactStats.co2Reduced += 0.5;
+            }
+            else if (category === 'Compost') {
+                user.impactStats.co2Reduced += 0.2;
+            }
+            else if (category === 'E-Waste') {
+                user.impactStats.co2Reduced += 1.0;
+            }
+            await user.save();
+            scanId = scan._id;
+            newTotalPoints = user.points;
         }
-        else if (category === 'Compost') {
-            user.impactStats.co2Reduced += 0.2;
+        else {
+            pointsToAward = 0;
         }
-        else if (category === 'E-Waste') {
-            user.impactStats.co2Reduced += 1.0;
-        }
-        await user.save();
         return res.status(200).json({
             success: true,
             data: {
                 classification,
                 pointsEarned: pointsToAward,
-                scanId: scan._id,
-                newTotalPoints: user.points
+                scanId,
+                newTotalPoints
             }
         });
     }

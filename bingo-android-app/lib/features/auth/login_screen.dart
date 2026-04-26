@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: const Text('Welcome back')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -90,6 +90,20 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                const Icon(Icons.recycling, size: 54, color: Color(0xFF16A34A)),
+                const SizedBox(height: 14),
+                const Text(
+                  'Save your BinGo progress',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Log in to keep points, scan history, and profile details synced.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xFF6B7280), fontSize: 15),
+                ),
+                const SizedBox(height: 28),
                 AuthTextField(
                   controller: _emailController,
                   label: 'Email',
@@ -117,6 +131,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                   onPressed: () => context.go('/register'),
                   child: const Text('Create an account'),
+                ),
+                TextButton(
+                  onPressed: () => context.go('/home'),
+                  child: const Text('Continue without account'),
                 ),
               ],
             ),

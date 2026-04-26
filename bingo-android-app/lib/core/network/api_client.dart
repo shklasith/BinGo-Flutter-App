@@ -68,11 +68,16 @@ class ApiClient {
     required File file,
     required String fieldName,
     bool authenticated = false,
+    bool includeTokenIfAvailable = false,
   }) async {
     final request = http.MultipartRequest('POST', _uri(path));
     request.files.add(await http.MultipartFile.fromPath(fieldName, file.path));
     request.headers.addAll(
-      await _headers(authenticated: authenticated, json: false),
+      await _headers(
+        authenticated: authenticated,
+        includeTokenIfAvailable: includeTokenIfAvailable,
+        json: false,
+      ),
     );
 
     final streamed = await request.send();
@@ -82,6 +87,7 @@ class ApiClient {
 
   Future<Map<String, String>> _headers({
     required bool authenticated,
+    bool includeTokenIfAvailable = false,
     bool json = true,
   }) async {
     final headers = <String, String>{};
@@ -95,6 +101,11 @@ class ApiClient {
         throw const ApiException('No active session. Please log in again.');
       }
       headers['Authorization'] = 'Bearer $token';
+    } else if (includeTokenIfAvailable) {
+      final token = await _sessionStore.getToken();
+      if (token != null && token.isNotEmpty) {
+        headers['Authorization'] = 'Bearer $token';
+      }
     }
 
     return headers;

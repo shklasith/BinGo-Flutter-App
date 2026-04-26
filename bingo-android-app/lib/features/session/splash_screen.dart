@@ -19,15 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _init() async {
-    final userId = await SessionController().getCurrentUserId();
+    await SessionController().getCurrentUserId();
 
     if (!mounted) return;
 
-    if (userId == null || userId.isEmpty) {
-      context.go('/login');
-    } else {
-      context.go('/home');
-    }
+    context.go('/home');
   }
 
   @override

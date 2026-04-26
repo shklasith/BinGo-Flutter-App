@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { scanWaste } from '../controllers/scan.controller';
-import { protect } from '../middleware/auth';
+import { optionalProtect } from '../middleware/auth';
 import multer from 'multer';
 import path from 'path';
 
@@ -33,10 +33,11 @@ const upload = multer({ storage });
  *     summary: Scan a waste image
  *     description: >
  *       Uploads an image of waste, classifies it using the Gemini AI service,
- *       awards points based on the waste category, and updates the user's impact stats.
+ *       awards points for signed-in users, and returns classification-only results for guests.
  *       **Categories & Points:** Recyclable/Compost/E-Waste → 10 pts, Special → 15 pts, Landfill → 2 pts.
  *     security:
  *       - bearerAuth: []
+ *       - {}
  *     requestBody:
  *       required: true
  *       content:
@@ -94,6 +95,6 @@ const upload = multer({ storage });
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/', protect, upload.single('image'), scanWaste as any);
+router.post('/', optionalProtect, upload.single('image'), scanWaste as any);
 
 export default router;

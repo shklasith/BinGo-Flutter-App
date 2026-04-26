@@ -14,7 +14,7 @@ class ScanController {
       '/api/scan',
       file: imageFile,
       fieldName: 'image',
-      authenticated: true,
+      includeTokenIfAvailable: true,
     );
 
     return ScanResult.fromJson(data);
