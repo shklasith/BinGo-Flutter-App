@@ -10,6 +10,15 @@ lerna-debug.log*
 # Node Modules
 node_modules/
 
+# Generated build outputs
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# macOS archive metadata
+__MACOSX/
+._*
 
 # Environment variables
 .env
