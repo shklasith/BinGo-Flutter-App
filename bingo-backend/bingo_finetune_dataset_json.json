@@ -430,5 +430,181 @@
         "content": "Go to bingo-mobile, run flutter pub get, then run flutter run --dart-define=API_BASE_URL=http://localhost:5000. For the Android emulator, use flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5000."
       }
     ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do I build the release APK?"
+      },
+      {
+        "role": "assistant",
+        "content": "Go to bingo-mobile, run flutter pub get, then run flutter build apk --release. The APK is created at bingo-mobile/build/app/outputs/flutter-apk/app-release.apk."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do I build the web frontend?"
+      },
+      {
+        "role": "assistant",
+        "content": "Go to bingo-frontend, run npm install, then run npm run build. The production build is generated in bingo-frontend/dist and can be served by the backend."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the production build order?"
+      },
+      {
+        "role": "assistant",
+        "content": "First build the web frontend. Second build the backend TypeScript output. Third start the backend server. The backend can serve the built React frontend from bingo-frontend/dist."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What tech stack does the mobile app use?"
+      },
+      {
+        "role": "assistant",
+        "content": "The mobile app uses Flutter, Riverpod for state management, GoRouter for routing, Dio for HTTP, Flutter secure storage for tokens and settings cache, image picker, permission handler, geolocator, and logger."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What routes are in the mobile app?"
+      },
+      {
+        "role": "assistant",
+        "content": "The mobile routes are / for splash or session screen, /login, /signup, /home, /scan, /scan-result, /centers, /leaderboard, /profile, and /settings."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How does the mobile app store the API URL?"
+      },
+      {
+        "role": "assistant",
+        "content": "The mobile app reads API_BASE_URL through a Dart define in AppEnv.apiBaseUrl. If no value is passed, it defaults to https://qlony.com."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the backend database?"
+      },
+      {
+        "role": "assistant",
+        "content": "The backend uses MongoDB with Mongoose. It includes User, ScanHistory, and Center models. The Center model uses a 2dsphere location index for nearby center lookup."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What data is stored for users?"
+      },
+      {
+        "role": "assistant",
+        "content": "The User model stores username, email, passwordHash, points, badges, settings, and impactStats. Passwords are stored as hashes, not plain text."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What does ScanHistory store?"
+      },
+      {
+        "role": "assistant",
+        "content": "ScanHistory stores the userId, imageUrl, classificationResult, optional location, and pointsEarned for each scan."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What does Center store?"
+      },
+      {
+        "role": "assistant",
+        "content": "Center stores the recycling center name, address, GeoJSON point location, accepted materials, operating hours, and contact number."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What Gemini model is used for image analysis?"
+      },
+      {
+        "role": "assistant",
+        "content": "The backend sends scan images to Gemini model gemini-2.0-flash through the analyzeWasteImage service."
+      }
+    ]
   }
 ]
