@@ -1,0 +1,930 @@
+[
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant, a helpful support assistant for the BinGo recycling and waste-management app. Give clear, simple, accurate answers about the mobile app, backend API, web frontend, setup, deployment, scanning, recycling centers, leaderboard, profile, and settings."
+      },
+      {
+        "role": "user",
+        "content": "What is BinGo?"
+      },
+      {
+        "role": "assistant",
+        "content": "BinGo is a recycling and waste-management app that helps users scan waste items, identify the waste category, learn disposal preparation steps, find nearby recycling centers, and track recycling progress with points and leaderboard rankings."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant, a helpful support assistant for the BinGo recycling and waste-management app."
+      },
+      {
+        "role": "user",
+        "content": "What problem does BinGo solve?"
+      },
+      {
+        "role": "assistant",
+        "content": "BinGo helps users who are unsure how to dispose of items. A user can scan or upload a photo, get an AI-based waste category, view preparation steps such as rinse or remove cap, find nearby recycling centers, and earn points for responsible waste actions."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant. Keep answers practical and app-focused."
+      },
+      {
+        "role": "user",
+        "content": "What are the main parts of the BinGo project?"
+      },
+      {
+        "role": "assistant",
+        "content": "The project has three main parts: the Flutter mobile app for users, the Express TypeScript backend API for authentication, scanning, points, MongoDB, and Gemini AI integration, and the React Vite web frontend for web or admin-style access."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "Which folder is the main mobile app?"
+      },
+      {
+        "role": "assistant",
+        "content": "The main integrated Flutter mobile app is in the bingo-mobile/ folder. Other Flutter folders are standalone feature apps or UI references."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How does the scan feature work?"
+      },
+      {
+        "role": "assistant",
+        "content": "The user opens the scan screen, takes a photo or selects an image from the gallery, and the mobile app sends the image to the backend. The backend validates the user's token, sends the image to Gemini AI, receives the classification result, saves scan history, awards points, and returns the category, confidence, preparation steps, points earned, scan ID, and new total points."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What waste categories does BinGo support?"
+      },
+      {
+        "role": "assistant",
+        "content": "BinGo supports these scan categories: Recyclable, Compost, E-Waste, Landfill, Special, and Unknown."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How many points are given for each scan category?"
+      },
+      {
+        "role": "assistant",
+        "content": "Recyclable, Compost, and E-Waste scans earn 10 points. Special scans earn 15 points. Landfill scans earn 2 points. Unknown or unsupported categories earn 0 points."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What does the scan result screen show?"
+      },
+      {
+        "role": "assistant",
+        "content": "The scan result screen shows the waste category, confidence percentage, disposal label, preparation steps, and points earned from the backend."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do I create an account in BinGo?"
+      },
+      {
+        "role": "assistant",
+        "content": "Open the app, go to signup, and enter a username, email, and password. After successful registration, the backend returns user data with a JWT token, and the app stores the session securely."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How does login work?"
+      },
+      {
+        "role": "assistant",
+        "content": "The user logs in with email and password. The backend verifies the credentials and returns a JWT token. The mobile app stores the token and sends it as a bearer token for protected API requests."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "Which API endpoints are used for users?"
+      },
+      {
+        "role": "assistant",
+        "content": "The user endpoints are POST /api/users/register, POST /api/users/login, GET /api/users/leaderboard, GET /api/users/profile, GET /api/users/settings, PATCH /api/users/settings, and GET /api/users/:userId. Profile, settings update, and user details require a bearer token."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the register request body?"
+      },
+      {
+        "role": "assistant",
+        "content": "The register request body should include username, email, and password. Example: {\"username\":\"greenHero\",\"email\":\"hero@example.com\",\"password\":\"MyStr0ngP@ss\"}."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the login request body?"
+      },
+      {
+        "role": "assistant",
+        "content": "The login request body should include email and password. Example: {\"email\":\"hero@example.com\",\"password\":\"MyStr0ngP@ss\"}."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How should protected endpoints be called?"
+      },
+      {
+        "role": "assistant",
+        "content": "Protected endpoints must include the Authorization header with the bearer token, like this: Authorization: Bearer <token>."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What endpoint classifies waste images?"
+      },
+      {
+        "role": "assistant",
+        "content": "Use POST /api/scan. It is a protected endpoint and expects multipart/form-data with a required image file field named image."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What does the scan API response include?"
+      },
+      {
+        "role": "assistant",
+        "content": "The scan API response includes classification, pointsEarned, scanId, and newTotalPoints. The classification contains the AI result such as category, confidence, label, and preparation guidance."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do nearby recycling centers work?"
+      },
+      {
+        "role": "assistant",
+        "content": "The centers screen requests location permission, gets the user's current latitude and longitude, and calls GET /api/centers/nearby with lat, lng, and optional radius. The app can show center name, address, operating hours, and the number of nearby centers."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the nearby centers endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "The endpoint is GET /api/centers/nearby?lat=6.9271&lng=79.8612&radius=5000. The lat and lng parameters are required. Radius is optional and defaults to 5000 meters."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the leaderboard feature?"
+      },
+      {
+        "role": "assistant",
+        "content": "The leaderboard shows top recyclers sorted by points. It encourages users to recycle more by comparing their progress with other users."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What does the profile screen show?"
+      },
+      {
+        "role": "assistant",
+        "content": "The profile screen shows the username, points-based progress, estimated scanned item count, badges, profile actions, settings access, and logout option."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What settings can the user change?"
+      },
+      {
+        "role": "assistant",
+        "content": "The user can change darkMode, scanReminders, and recyclingTips. These settings are synced with the backend for authenticated users."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the settings update body?"
+      },
+      {
+        "role": "assistant",
+        "content": "The settings update body uses boolean values only. Example: {\"darkMode\":false,\"scanReminders\":true,\"recyclingTips\":true}. The backend rejects unknown fields and non-boolean values."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What are the education endpoints?"
+      },
+      {
+        "role": "assistant",
+        "content": "The education endpoints are GET /api/education/daily-tip for a random recycling tip and GET /api/education/search?q=recycling for searching tip titles and content."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "Where is the backend API documentation?"
+      },
+      {
+        "role": "assistant",
+        "content": "When the backend runs on the default port, Swagger UI is available at http://localhost:5000/api/docs and the OpenAPI JSON is available at http://localhost:5000/api/docs.json."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do I run the backend locally?"
+      },
+      {
+        "role": "assistant",
+        "content": "Go to bingo-backend, install dependencies with npm install, create the .env file with PORT, MONGODB_URI, JWT_SECRET, and GEMINI_API_KEY, then run npm run dev."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What environment variables does the backend need?"
+      },
+      {
+        "role": "assistant",
+        "content": "The backend needs MONGODB_URI and JWT_SECRET. PORT is optional and defaults to 5000. GEMINI_API_KEY is required for image scan classification. Do not commit real secrets."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do I run the Flutter app locally?"
+      },
+      {
+        "role": "assistant",
+        "content": "Go to bingo-mobile, run flutter pub get, then run flutter run --dart-define=API_BASE_URL=http://localhost:5000. For the Android emulator, use flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5000."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do I build the release APK?"
+      },
+      {
+        "role": "assistant",
+        "content": "Go to bingo-mobile, run flutter pub get, then run flutter build apk --release. The APK is created at bingo-mobile/build/app/outputs/flutter-apk/app-release.apk."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do I build the web frontend?"
+      },
+      {
+        "role": "assistant",
+        "content": "Go to bingo-frontend, run npm install, then run npm run build. The production build is generated in bingo-frontend/dist and can be served by the backend."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the production build order?"
+      },
+      {
+        "role": "assistant",
+        "content": "First build the web frontend. Second build the backend TypeScript output. Third start the backend server. The backend can serve the built React frontend from bingo-frontend/dist."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What tech stack does the mobile app use?"
+      },
+      {
+        "role": "assistant",
+        "content": "The mobile app uses Flutter, Riverpod for state management, GoRouter for routing, Dio for HTTP, Flutter secure storage for tokens and settings cache, image picker, permission handler, geolocator, and logger."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What routes are in the mobile app?"
+      },
+      {
+        "role": "assistant",
+        "content": "The mobile routes are / for splash or session screen, /login, /signup, /home, /scan, /scan-result, /centers, /leaderboard, /profile, and /settings."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How does the mobile app store the API URL?"
+      },
+      {
+        "role": "assistant",
+        "content": "The mobile app reads API_BASE_URL through a Dart define in AppEnv.apiBaseUrl. If no value is passed, it defaults to https://qlony.com."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the backend database?"
+      },
+      {
+        "role": "assistant",
+        "content": "The backend uses MongoDB with Mongoose. It includes User, ScanHistory, and Center models. The Center model uses a 2dsphere location index for nearby center lookup."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What data is stored for users?"
+      },
+      {
+        "role": "assistant",
+        "content": "The User model stores username, email, passwordHash, points, badges, settings, and impactStats. Passwords are stored as hashes, not plain text."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What does ScanHistory store?"
+      },
+      {
+        "role": "assistant",
+        "content": "ScanHistory stores the userId, imageUrl, classificationResult, optional location, and pointsEarned for each scan."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What does Center store?"
+      },
+      {
+        "role": "assistant",
+        "content": "Center stores the recycling center name, address, GeoJSON point location, accepted materials, operating hours, and contact number."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What Gemini model is used for image analysis?"
+      },
+      {
+        "role": "assistant",
+        "content": "The backend sends scan images to Gemini model gemini-2.0-flash through the analyzeWasteImage service."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What happens if GEMINI_API_KEY is missing?"
+      },
+      {
+        "role": "assistant",
+        "content": "Scan image classification will not work without GEMINI_API_KEY. Configure GEMINI_API_KEY in bingo-backend/.env before testing the scan feature."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What happens if MONGODB_URI is missing?"
+      },
+      {
+        "role": "assistant",
+        "content": "The backend requires MONGODB_URI. If the MongoDB connection string is missing or the connection fails, the backend logs the error and exits."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the React web frontend route base?"
+      },
+      {
+        "role": "assistant",
+        "content": "The React web frontend uses BrowserRouter with basename /apphome. Its routes include /login, /signup, /, /scan, /scan/result, /map, /leaderboard, and /profile."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "Where does the web frontend store its session?"
+      },
+      {
+        "role": "assistant",
+        "content": "The web frontend stores the session in localStorage under bingo_web_session. The session contains userId and token."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What does the web API client do when a request returns 401?"
+      },
+      {
+        "role": "assistant",
+        "content": "The web API client clears the local session and redirects the user to the login page when it receives a 401 response."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "Give me a simple demo flow for BinGo."
+      },
+      {
+        "role": "assistant",
+        "content": "Start the backend with MongoDB and Gemini configured. Run the Flutter mobile app. Sign up a new user. Open Home and view the daily tip. Open Scan and choose an item photo. Wait for AI analysis. Read the category and preparation steps. Open Leaderboard to confirm points were added. Open Centers to load nearby recycling centers. Open Profile and Settings to change a preference."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "My scan request is failing. What should I check?"
+      },
+      {
+        "role": "assistant",
+        "content": "Check that the user is logged in, the Authorization bearer token is sent, the request uses multipart/form-data, the file field name is image, GEMINI_API_KEY is configured, MongoDB is connected, and the backend is running on the API_BASE_URL used by the app."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "Nearby centers are not loading. What can cause this?"
+      },
+      {
+        "role": "assistant",
+        "content": "Nearby centers may fail if location permission is denied, lat or lng is missing, the backend is unreachable, the centers collection has no seeded data, or the app is using the wrong API_BASE_URL. Test GET /api/centers/nearby with valid lat and lng from the browser or curl."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "Settings update is failing. What should I check?"
+      },
+      {
+        "role": "assistant",
+        "content": "Check that the request is authenticated, the token is valid, the body only contains supported keys, and all values are booleans. Supported keys are darkMode, scanReminders, and recyclingTips."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What should I use as API_BASE_URL for Android emulator?"
+      },
+      {
+        "role": "assistant",
+        "content": "For the default Android emulator, use http://10.0.2.2:5000 because localhost inside the emulator points to the emulator itself, not your computer."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What should I use as API_BASE_URL for local desktop testing?"
+      },
+      {
+        "role": "assistant",
+        "content": "For local desktop testing, use http://localhost:5000 if the backend is running on the same machine and using the default port."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the correct Git workflow for project tasks?"
+      },
+      {
+        "role": "assistant",
+        "content": "Pull the latest changes from GitHub, make the requested changes, validate the changes, commit only task-specific files, and push the commit back to the repository. Check git status before staging to avoid adding unrelated untracked files."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "Should I commit bingo-merged?"
+      },
+      {
+        "role": "assistant",
+        "content": "Do not commit bingo-merged unless the task explicitly requires it. It is a local untracked generated app and should be treated as local work. The canonical integrated mobile app is bingo-mobile/."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What are the standalone Flutter feature apps?"
+      },
+      {
+        "role": "assistant",
+        "content": "The repository includes standalone Flutter feature apps for register, scan, session, map, leaderboard, profile, settings page, home page, and an additional bingo project. They are useful as UI or flow references, but bingo-mobile/ is the integrated app."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What should the app say when scan category is Unknown?"
+      },
+      {
+        "role": "assistant",
+        "content": "The app should explain that the item could not be confidently identified, suggest taking a clearer photo with better lighting, and avoid awarding points because Unknown categories earn 0 points."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What should the app say for Recyclable items?"
+      },
+      {
+        "role": "assistant",
+        "content": "The app should tell the user that the item is recyclable, show preparation steps such as rinse, dry, flatten, or remove caps when relevant, and display the points earned for the scan."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What should the app say for Compost items?"
+      },
+      {
+        "role": "assistant",
+        "content": "The app should tell the user that the item is compostable and suggest placing it in a compost bin if it is clean organic waste. It should warn the user not to mix compost with plastic, metal, glass, or harmful chemicals."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What should the app say for E-Waste items?"
+      },
+      {
+        "role": "assistant",
+        "content": "The app should tell the user that the item is electronic waste and should not be placed in normal trash. It should recommend taking it to an e-waste collection point or approved recycling center."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What should the app say for Landfill items?"
+      },
+      {
+        "role": "assistant",
+        "content": "The app should tell the user that the item is likely landfill waste and cannot be easily recycled. It should suggest reducing future use, reusing when possible, and disposing of it safely in general waste."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What should the app say for Special disposal items?"
+      },
+      {
+        "role": "assistant",
+        "content": "The app should tell the user that the item needs special disposal and should not be mixed with regular waste. It should recommend following local disposal rules or taking it to a suitable collection center."
+      }
+    ]
+  }
+]
