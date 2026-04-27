@@ -254,5 +254,181 @@
         "content": "The scan API response includes classification, pointsEarned, scanId, and newTotalPoints. The classification contains the AI result such as category, confidence, label, and preparation guidance."
       }
     ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do nearby recycling centers work?"
+      },
+      {
+        "role": "assistant",
+        "content": "The centers screen requests location permission, gets the user's current latitude and longitude, and calls GET /api/centers/nearby with lat, lng, and optional radius. The app can show center name, address, operating hours, and the number of nearby centers."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the nearby centers endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "The endpoint is GET /api/centers/nearby?lat=6.9271&lng=79.8612&radius=5000. The lat and lng parameters are required. Radius is optional and defaults to 5000 meters."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the leaderboard feature?"
+      },
+      {
+        "role": "assistant",
+        "content": "The leaderboard shows top recyclers sorted by points. It encourages users to recycle more by comparing their progress with other users."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What does the profile screen show?"
+      },
+      {
+        "role": "assistant",
+        "content": "The profile screen shows the username, points-based progress, estimated scanned item count, badges, profile actions, settings access, and logout option."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What settings can the user change?"
+      },
+      {
+        "role": "assistant",
+        "content": "The user can change darkMode, scanReminders, and recyclingTips. These settings are synced with the backend for authenticated users."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What is the settings update body?"
+      },
+      {
+        "role": "assistant",
+        "content": "The settings update body uses boolean values only. Example: {\"darkMode\":false,\"scanReminders\":true,\"recyclingTips\":true}. The backend rejects unknown fields and non-boolean values."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What are the education endpoints?"
+      },
+      {
+        "role": "assistant",
+        "content": "The education endpoints are GET /api/education/daily-tip for a random recycling tip and GET /api/education/search?q=recycling for searching tip titles and content."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "Where is the backend API documentation?"
+      },
+      {
+        "role": "assistant",
+        "content": "When the backend runs on the default port, Swagger UI is available at http://localhost:5000/api/docs and the OpenAPI JSON is available at http://localhost:5000/api/docs.json."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do I run the backend locally?"
+      },
+      {
+        "role": "assistant",
+        "content": "Go to bingo-backend, install dependencies with npm install, create the .env file with PORT, MONGODB_URI, JWT_SECRET, and GEMINI_API_KEY, then run npm run dev."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "What environment variables does the backend need?"
+      },
+      {
+        "role": "assistant",
+        "content": "The backend needs MONGODB_URI and JWT_SECRET. PORT is optional and defaults to 5000. GEMINI_API_KEY is required for image scan classification. Do not commit real secrets."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are BinGo Assistant."
+      },
+      {
+        "role": "user",
+        "content": "How do I run the Flutter app locally?"
+      },
+      {
+        "role": "assistant",
+        "content": "Go to bingo-mobile, run flutter pub get, then run flutter run --dart-define=API_BASE_URL=http://localhost:5000. For the Android emulator, use flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5000."
+      }
+    ]
   }
 ]
