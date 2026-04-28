@@ -1,0 +1,389 @@
+commit b1f08bec0c9d897ba9660ea7631d0846de7873d6
+Author: Kaveesha Lasith <shklimarshana@students.nsbm.ac.lk>
+Date:   2026-04-28 00:27:01 +0530
+
+    Merge pull request #12 from shklasith/fine-tune-data
+
+commit 757261a8f546487eee45595a6414a87dca44b161
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-27 19:20:39 +0530
+
+    docs: add troubleshooting, demo flow and final waste category guidance
+
+commit 1bccca32879de5cb414e4fb7d1d4657a2017faa6
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-27 19:18:44 +0530
+
+    docs: define build processes, tech stack and database schemas
+
+commit 451d09504c11de88aea609d9581161397d3fcb53
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-27 13:47:25 +0530
+
+    feat: add location centers, profile settings and local setup guides
+
+commit 028d457b870e287088a14faea61fb92700cc6b18
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-27 12:21:38 +0530
+
+    feat: add user authentication flow and API endpoint documentation
+
+commit 517df2f73bbb8045f6a4e04ced4174545fb59568
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-27 12:17:49 +0530
+
+    docs: add core app definitions and scanning system data
+
+commit 60762a6c069240765f9495edbb88cdd381bc0095
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-27 12:06:15 +0530
+
+    chore: add system prompt for BinGo assistant
+
+commit d45e4033f8247d404d616f1bf1f16c92d8fdfd51
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-27 11:44:39 +0530
+
+    feat: add finetune dataset JSON file
+
+commit dea93a968b4445962e6fb88fe667a1046a021663
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 23:07:07 +0530
+
+    Allow guest app usage
+
+commit d6cd3390974dd7a34a341db01c5870f8a9072d07
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 22:52:16 +0530
+
+    chore: remove mobile and frontend apps
+
+commit c4e8d966e3808612bdd26a3dd274351d35c3793f
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 22:50:31 +0530
+
+    chore: remove unused project folders
+
+commit 9191a86467800f8e03a735da249c141ddd1c6d18
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 22:48:32 +0530
+
+    chore: remove duplicate feature app folders
+
+commit 2f907ee0456c3c69404f397959cbf3af5cb37c64
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 22:45:23 +0530
+
+    chore: remove generated junk files
+
+commit 6f07ba9223d0551dee6a55f4a7b7e854abd0a968
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 22:42:06 +0530
+
+    Rename merged app folder for Android
+
+commit e7223e3a3ded778d37cb1fd194d4b91c41b501dc
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 22:38:32 +0530
+
+    Merge remote-tracking branch 'origin/test' into main
+
+commit a7efc93161c118be06abda5dcad1c9ad4d0eaffe
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 22:37:03 +0530
+
+    Link merged Flutter app to backend
+
+commit e132815c67d20d5ce032fecf15c92618451bdf9c
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 17:31:20 +0530
+
+    docs: explain project usage
+
+commit bcb98a924f7c7e0bb4e1026883faa8eb2e9369d3
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 17:28:11 +0530
+
+    docs: add full project documentation
+
+commit faf36ec8305665f9d7c9764e7ee8eef54c824c51
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-26 03:00:23 +0530
+
+    Merge remote-tracking branch 'origin/update-backend' into main
+
+commit 9447c4b4c90a4debdffd5a802ac5f4badcb96458
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-26 02:57:07 +0530
+
+    Update README
+
+commit 625bdc74fe87ff6c6ae250a6d835b8d8024d1279
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-26 02:53:58 +0530
+
+    Added complete README for bingo-backend
+
+commit 94749d44330af16662832f250afb81f92081afcf
+Author: HMSSKHerath <hmsskherath20020903@gmail.com>
+Date:   2026-04-26 01:30:11 +0530
+
+    Added README file for the project
+
+commit df36fb9de2d32ae23adaa5333227d39fdb25deb2
+Author: reehath <reehathree@gmail.com>
+Date:   2026-04-23 14:36:38 +0530
+
+    added readme file
+
+commit 5e1caf7dc2a032bc5dcd0ac64487011140ec88ef
+Author: reehath <Reehathwelimada12#>
+Date:   2026-04-23 14:15:18 +0530
+
+    added readme file
+
+commit f32ab4940d96b28c74d0d07bb63aaaa7c1245b71
+Author: reehath <Reehathwelimada12#>
+Date:   2026-04-23 14:14:00 +0530
+
+    added readme file
+
+commit 521c0e387b2573af82b13b60d0c6ef5e4d920c14
+Author: reehath <Reehathwelimada12#>
+Date:   2026-04-23 14:03:29 +0530
+
+    added readme file
+
+commit 8c4f56b3074aa5e1b294e036fc0ad7ad2eb60405
+Author: reehath <Reehathwelimada12#>
+Date:   2026-04-22 23:58:11 +0530
+
+    new login page
+
+commit 008c85fc103297e6acce834b65781673e7d33c1d
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-22 19:06:02 +0530
+
+    Add merged Flutter UI app
+
+commit 12e634d2d3a32a982570d38b0e19caaaf5667aee
+Author: Nayanathara Dewmini Suneth <nayanatharadewmini864@gmail.com>
+Date:   2026-04-21 10:07:45 +0530
+
+    Merge pull request #10 from shklasith/profile
+
+commit 121f519659547d00737c16aed037805c67e7b87d
+Author: Nayanathara <nayanatharadewmini864@gmail.com>
+Date:   2026-04-21 10:06:42 +0530
+
+    Added profile page
+
+commit a6d773cb2979c502cb41e92e15f2e53296e7bf7a
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-20 21:55:26 +0530
+
+    Merge branch 'Dev' into main
+
+commit 8b71c2b27b4fe546cdf9f8239094c57e83e16eb6
+Author: reehath <Reehathwelimada12#>
+Date:   2026-04-20 00:18:39 +0530
+
+     the commit.
+
+commit 8b1e79b5af2f11c0c9140d2e61ec52126c0ea73f
+Author: reehath <Reehathwelimada12#>
+Date:   2026-04-19 21:40:29 +0530
+
+    Add signup page
+
+commit c4e6f3530cdbe8b0ede80bf75868b33a75a9b14c
+Author: Nayanathara Dewmini Suneth <nayanatharadewmini864@gmail.com>
+Date:   2026-04-19 14:44:15 +0530
+
+    Merge pull request #9 from shklasith/home_page
+
+commit 1060e094fa9c2381d2d8ed7e2554aa83b67ddbda
+Author: Nayanathara <nayanatharadewmini864@gmail.com>
+Date:   2026-04-19 14:40:42 +0530
+
+    Added home page flutter project
+
+commit e1b75098c101dbd1d2400ca3e2e40ab1497fb539
+Author: Kumudu-Sameeksha <dkkskulasuriya@students.nsbm.ac.lk>
+Date:   2026-04-19 01:40:13 +0530
+
+    Merge pull request #8 from shklasith/map
+
+commit 91a3d5e8bbf565250ba821e38b11ce3f1634ff96
+Author: Kumudu-Sameeksha <dkkskulasuriya@students.nsbm.ac.lk>
+Date:   2026-04-19 01:38:13 +0530
+
+    Added my project
+
+commit 9ac9432e59cfb76d6e9810715d7a6f87495922af
+Author: Tharu <tawrajapaksha@students.nsbm.ac.lk>
+Date:   2026-04-19 00:07:54 +0530
+
+    Merge pull request #6 from shklasith/session_page
+
+commit 9ae38aec91c376404fd09ed9816dea3d706ac968
+Author: Ishini Panchali <panchaliishini@gmail.com>
+Date:   2026-04-19 00:07:40 +0530
+
+    Merge pull request #5 from shklasith/settings_page
+
+commit a949c3a2190a463a711fa064eb26864d38ca9ce9
+Author: Ishini1 <panchaliishini@gmail.com>
+Date:   2026-04-19 00:05:05 +0530
+
+    Added my project
+
+commit 0c85815c567cdff2e68a904fe4163ac7157d5fdb
+Author: tharu-nsbm <tawrajapaksha@students.nsbm.ac.lk>
+Date:   2026-04-19 00:04:58 +0530
+
+    Added my project
+
+commit 2eae1908e5136caa4093a8dfe0c0ade4df5cb2eb
+Author: Kumudu-Sameeksha <dkkskulasuriya@students.nsbm.ac.lk>
+Date:   2026-04-19 00:00:40 +0530
+
+    Delete center/flutter_project10/bingo_app directory
+
+commit 474228ce6f0c7b618073becf693fc1bb7a9e9b2c
+Author: Kumudu-Sameeksha <dkkskulasuriya@students.nsbm.ac.lk>
+Date:   2026-04-13 00:33:35 +0530
+
+    Merge pull request #4 from shklasith/scan_page
+
+commit e0471c0fab9106a5179a5a54ba9cd4e0f4d96703
+Author: Kumudu-Sameeksha <dkkskulasuriya@students.nsbm.ac.lk>
+Date:   2026-04-13 00:31:01 +0530
+
+    merge scan page to the main branch
+
+commit 0819f8d73fcc0612595a094a5235d098cf8ef1fb
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-12 18:33:51 +0530
+
+    Sync user settings with backend
+
+commit 68ee85855fc83e71f935c7c60cf297aa6d92bc5c
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-12 18:19:59 +0530
+
+    Add mobile settings page
+
+commit f3648ab7283f9f73df245cbf80591aacd140e9b5
+Author: Tharu <tawrajapaksha@students.nsbm.ac.lk>
+Date:   2026-04-11 22:01:53 +0530
+
+    Merge pull request #3 from shklasith/register_page
+
+commit aa25c6de8b4e4b070b484d126d4bfb67e353a00d
+Author: tharu-nsbm <tawrajapaksha@students.nsbm.ac.lk>
+Date:   2026-04-11 21:55:38 +0530
+
+    Added my project
+
+commit e8017b157c85a0c055aaa8f3e15c3a2c265b18aa
+Author: Ishini Panchali <panchaliishini@gmail.com>
+Date:   2026-04-11 00:02:22 +0530
+
+    Merge pull request #2 from shklasith/leaderboard_page
+
+commit 1b46be5aa705d9b6bb1c37579ed2ef7d982b69f9
+Author: Ishini1 <panchaliishini@gmail.com>
+Date:   2026-04-10 23:59:39 +0530
+
+    Added my project
+
+commit c9c1f5d87deb9551b82ab3065a4979926ffee4f7
+Author: Kumudu-Sameeksha <dkkskulasuriya@students.nsbm.ac.lk>
+Date:   2026-04-09 23:40:06 +0530
+
+    Merge pull request #1 from shklasith/map_view_page
+
+commit cb5d4a2860ed986a352bb0805253f508daefa62e
+Author: Kumudu-Sameeksha <dkkskulasuriya@students.nsbm.ac.lk>
+Date:   2026-04-09 23:33:02 +0530
+
+    Added my project
+
+commit 4ae5fc5fcbd92e44c79891acefb8e5d3031297fa
+Author: Vinuka Kodituwakku <vinuka.t@pm.me>
+Date:   2026-04-02 21:27:07 +0530
+
+    feat(doc): added swagger documentation
+
+commit bcbdcad6ce5b386105996aa60af48d252a087b57
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-04-02 15:45:11 +0530
+
+    Merge branch 'Dev' into main
+
+commit 6298a2a4ab272d0dd05bbd364edd121323153a72
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-03-18 00:46:07 +0530
+
+    Add project improvement roadmap and Context7 MCP settings
+
+commit b50c635d8ff04770184e4dba4518d3402e7d5f3d
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-03-18 00:44:40 +0530
+
+    feat(frontend): integrate live qlony apis with auth session and protected routes
+
+commit 5a0689768cf0580c3250d0354f8b16cf58b6ee43
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-03-18 00:44:37 +0530
+
+    feat(mobile): default to qlony api and persist jwt session for protected endpoints
+
+commit 3562aeb5eb335fda1efa2eed11c5446fda3c97bc
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-03-18 00:44:34 +0530
+
+    feat(backend): align user profile route and health envelope for qlony api contract
+
+commit 1b0131bc09cb1f26dfe13d5a23c7068ac23e228e
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-03-17 00:25:31 +0530
+
+    test(mobile): update auth screen widget coverage
+
+commit 8a6f78bb7c3afc356ec53bb71e16b7ff4fd65b75
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-03-17 00:25:28 +0530
+
+    feat(mobile): redesign core app screens to match web UI
+
+commit 7096790de5a6114666572d2e14b5f78fe290dcdf
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-03-17 00:25:23 +0530
+
+    feat(mobile): add web-style auth flow and shared app shell
+
+commit fca7ee30f6e9352b29e821a930a1b4e26ba504e2
+Author: Gemini CLI <gemini-cli@google.com>
+Date:   2026-02-22 06:38:39 +0000
+
+    feat: integrate frontend with backend and implement user authentication
+
+commit 229b9ff226458204eeec2ab217544f6672497360
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-02-22 00:45:21 +0530
+
+    Trim Flutter app to Android and iOS only
+
+commit df12a7b2a2c68098c16c362f2dc3dae904b2736d
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-02-21 22:09:52 +0530
+
+    Add Flutter mobile client with Riverpod architecture
+
+commit 2a4c1e03dbbfef5f6a48252365e6540e327042c1
+Author: Kaveesha Lasith <90321578+shklasith@users.noreply.github.com>
+Date:   2026-02-20 23:31:30 +0530
+
+    Initial project commit
