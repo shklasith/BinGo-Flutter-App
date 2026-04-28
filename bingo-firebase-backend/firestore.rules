@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
+
+    match /scanHistory/{scanId} {
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /centers/{centerId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /educationTips/{tipId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

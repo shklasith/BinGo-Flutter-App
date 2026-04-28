@@ -12,6 +12,7 @@ node_modules/
 
 # Generated build outputs
 build/
+bingo-firebase-backend/dist/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
