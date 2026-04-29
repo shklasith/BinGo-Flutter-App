@@ -1,158 +1,143 @@
-# BinGo API Documentation
+# BinGo Full API Documentation
 
-The BinGo API provides endpoints for user authentication, waste classification (via Gemini AI), recycling center lookup, and educational content.
+The BinGo API is a RESTful service that powers the BinGo recycling ecosystem. It handles user management, AI-driven waste classification, and location-based discovery of recycling centers.
 
 - **Base URL**: `https://qlony.com/api`
-- **Content-Type**: `application/json`
-- **Auth Strategy**: JWT Bearer Token
+- **Protocol**: HTTPS
+- **Authentication**: JWT Bearer Token in `Authorization` header.
 
 ---
 
-## Authentication
+## 🔐 User Management & Auth
 
-### 1. Register User
+### 1. Register Account
 `POST /users/register`
+Creates a new profile and starts a session.
 
-Create a new user account.
-
-**Request Body:**
+**Body:**
 ```json
 {
-  "username": "greenHero",
-  "email": "hero@example.com",
-  "password": "MyStr0ngP@ss"
+  "username": "earth_warrior",
+  "email": "user@example.com",
+  "password": "SecurePassword123"
 }
 ```
-
-**Response (201 Created):**
+**Response (201):**
 ```json
 {
   "success": true,
   "data": {
-    "_id": "664a1f...",
-    "username": "greenHero",
-    "email": "hero@example.com",
-    "points": 0,
-    "token": "eyJhbGciOiJIUzI1NiIs..."
+    "_id": "65f1...",
+    "username": "earth_warrior",
+    "email": "user@example.com",
+    "token": "eyJhbGci..."
   }
 }
 ```
 
-### 2. Login User
+### 2. Login
 `POST /users/login`
+Authenticates existing users.
 
-**Request Body:**
+**Body:**
 ```json
 {
-  "email": "hero@example.com",
-  "password": "MyStr0ngP@ss"
+  "email": "user@example.com",
+  "password": "SecurePassword123"
 }
 ```
+**Response (200):** Same structure as Register.
 
-**Response (200 OK):**
+### 3. Get Private Profile
+`GET /users/profile`
+*Requires Authentication*
+
+**Response (200):**
 ```json
 {
   "success": true,
   "data": {
-    "username": "greenHero",
-    "email": "hero@example.com",
-    "token": "eyJhbGciOiJIUzI1NiIs..."
+    "username": "earth_warrior",
+    "points": 450,
+    "impactStats": {
+      "treesSaved": 1.2,
+      "plasticDiverted": 25,
+      "co2Reduced": 8.5
+    },
+    "badges": ["pioneer", "5_scans"]
   }
 }
 ```
 
----
-
-## User Profile & Leaderboard
-
-### 3. Get Leaderboard
+### 4. Global Leaderboard
 `GET /users/leaderboard`
+Public top 10 rankings.
 
-Returns the top 10 users by points.
-
-**Response (200 OK):**
+**Response (200):**
 ```json
 {
   "success": true,
   "data": [
-    { "username": "hero1", "points": 1200 },
-    { "username": "hero2", "points": 950 }
+    { "username": "hero_1", "points": 1200 },
+    { "username": "earth_warrior", "points": 450 }
   ]
-}
-```
-
-### 4. Get Profile
-`GET /users/profile` (Auth Required)
-
-**Response (200 OK):**
-```json
-{
-  "success": true,
-  "data": {
-    "username": "greenHero",
-    "email": "hero@example.com",
-    "points": 150,
-    "badges": ["first_scan"],
-    "impactStats": {
-      "treesSaved": 0.5,
-      "plasticDiverted": 12,
-      "co2Reduced": 4.2
-    }
-  }
 }
 ```
 
 ---
 
-## Waste Scanning (Gemini AI)
+## 📸 Waste Scanning
 
-### 5. Scan & Classify Waste
-`POST /scan` (Auth Required)
+### 5. Classify Material
+`POST /scan`
+*Requires Authentication for points*
 
-Upload an image to identify waste type and earn points.
+Uses Gemini 2.0 Flash to analyze waste.
 
 **Request:** `multipart/form-data`
-- `image`: File (Required)
+- `image`: File (The photo taken by user)
 
-**Response (200 OK):**
+**Response (200):**
 ```json
 {
   "success": true,
   "data": {
-    "itemName": "Plastic Bottle",
-    "category": "Recyclable",
-    "prepSteps": ["Remove cap", "Rinse", "Crush"],
+    "classification": {
+      "itemName": "Aluminum Can",
+      "category": "Recyclable",
+      "prepSteps": ["Empty contents", "Rinse", "Crush to save space"],
+      "confidence": 0.98
+    },
     "pointsEarned": 10,
-    "newTotalPoints": 160
+    "newTotalPoints": 460
   }
 }
 ```
 
 ---
 
-## Recycling Centers
+## 📍 Recycling Centers
 
-### 6. Find Nearby Centers
+### 6. Find Nearby
 `GET /centers/nearby`
+Find physical drop-off points using GeoJSON.
 
-Find centers near a specific location.
+**Query Params:**
+- `lat`: Number (e.g. 6.9271)
+- `lng`: Number (e.g. 79.8612)
+- `radius`: Number (Meters, default: 5000)
 
-**Query Parameters:**
-- `lat`: Number (Required) - e.g., `6.9271`
-- `lng`: Number (Required) - e.g., `79.8612`
-- `radius`: Number (Optional) - default `5000` (meters)
-
-**Response (200 OK):**
+**Response (200):**
 ```json
 {
   "success": true,
-  "count": 2,
+  "count": 1,
   "data": [
     {
-      "name": "Colombo Recycling Hub",
-      "address": "123 Main St",
-      "location": { "type": "Point", "coordinates": [79.8612, 6.9271] },
-      "acceptedMaterials": ["Recyclable", "E-Waste"]
+      "name": "Central Recycling Depot",
+      "address": "45 Green Way, Colombo",
+      "acceptedMaterials": ["Plastic", "Metal", "Glass"],
+      "operatingHours": "Mon-Sat: 08:00 - 18:00"
     }
   ]
 }
@@ -160,26 +145,30 @@ Find centers near a specific location.
 
 ---
 
-## Education
+## 💡 Education & Tips
 
-### 7. Get Daily Tip
+### 7. Daily Tip
 `GET /education/daily-tip`
+Random eco-friendly advice.
 
-**Response (200 OK):**
+**Response (200):**
 ```json
 {
   "success": true,
   "data": {
-    "title": "Rinse before recycling",
-    "content": "Food residue can contaminate recycling batches."
+    "title": "Degradable vs Compostable",
+    "content": "Compostable items break down into nutrient-rich soil..."
   }
 }
 ```
 
+### 8. Knowledge Search
+`GET /education/search?q=plastic`
+Search the tips database.
+
 ---
 
-## API Documentation (Swagger)
+## 🛠 Developer Tools
 
-The interactive Swagger UI is available at:
-- **UI**: `https://qlony.com/api/docs`
-- **OpenAPI JSON**: `https://qlony.com/api/docs.json`
+- **Swagger UI**: [https://qlony.com/api/docs](https://qlony.com/api/docs)
+- **Raw Spec**: [https://qlony.com/api/docs.json](https://qlony.com/api/docs.json)
