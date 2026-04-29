@@ -4,11 +4,10 @@ Merged BinGo Flutter app wired to the local BinGo backend.
 
 ## Local backend
 
-The default API base URL is `http://10.0.2.2:5000`, which targets a backend
-running on the host machine from an Android emulator.
+The default API base URL is `https://qlony.com`, which targets the production backend.
 
 ```sh
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:5000
+flutter run --dart-define=API_BASE_URL=https://qlony.com
 ```
 
 For a physical phone, replace the host with the computer LAN IP:

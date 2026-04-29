@@ -216,7 +216,7 @@ app.get("/api/docs.json", (req: Request, res: Response) => {
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
-const frontendPath = path.join(__dirname, "../../bingo-frontend/dist");
+const frontendPath = path.join(__dirname, "../../bingo-admin-dashboard/dist");
 app.use(express.static(frontendPath));
 
 app.use("/api/scan", scanRoutes);

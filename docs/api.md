@@ -1,43 +1,21 @@
-# API
+# BinGo API Documentation
 
-The backend API is mounted under `/api`. Most responses follow:
+The BinGo API provides endpoints for user authentication, waste classification (via Gemini AI), recycling center lookup, and educational content.
 
-```json
-{
-  "success": true,
-  "data": {}
-}
-```
+- **Base URL**: `https://qlony.com/api`
+- **Content-Type**: `application/json`
+- **Auth Strategy**: JWT Bearer Token
 
-Errors usually return:
+---
 
-```json
-{
-  "success": false,
-  "message": "Error message"
-}
-```
+## Authentication
 
-Protected endpoints require a bearer token:
+### 1. Register User
+`POST /users/register`
 
-```http
-Authorization: Bearer <token>
-```
+Create a new user account.
 
-## Users
-
-| Method | Path | Auth | Purpose |
-| --- | --- | --- | --- |
-| `POST` | `/api/users/register` | No | Create a user and return user data with JWT |
-| `POST` | `/api/users/login` | No | Authenticate with email/password and return JWT |
-| `GET` | `/api/users/leaderboard` | No | Return top 10 users sorted by points |
-| `GET` | `/api/users/profile` | Yes | Return the authenticated user's profile |
-| `GET` | `/api/users/settings` | Yes | Return the authenticated user's settings |
-| `PATCH` | `/api/users/settings` | Yes | Update settings booleans |
-| `GET` | `/api/users/:userId` | Yes | Return a user profile by MongoDB ObjectId |
-
-Register body:
-
+**Request Body:**
 ```json
 {
   "username": "greenHero",
@@ -46,8 +24,24 @@ Register body:
 }
 ```
 
-Login body:
+**Response (201 Created):**
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "664a1f...",
+    "username": "greenHero",
+    "email": "hero@example.com",
+    "points": 0,
+    "token": "eyJhbGciOiJIUzI1NiIs..."
+  }
+}
+```
 
+### 2. Login User
+`POST /users/login`
+
+**Request Body:**
 ```json
 {
   "email": "hero@example.com",
@@ -55,59 +49,137 @@ Login body:
 }
 ```
 
-Settings keys:
-
+**Response (200 OK):**
 ```json
 {
-  "darkMode": false,
-  "scanReminders": true,
-  "recyclingTips": true
+  "success": true,
+  "data": {
+    "username": "greenHero",
+    "email": "hero@example.com",
+    "token": "eyJhbGciOiJIUzI1NiIs..."
+  }
 }
 ```
 
-`PATCH /api/users/settings` rejects unknown fields and non-boolean values.
+---
 
-## Scan
+## User Profile & Leaderboard
 
-| Method | Path | Auth | Purpose |
-| --- | --- | --- | --- |
-| `POST` | `/api/scan` | Yes | Upload and classify a waste image |
+### 3. Get Leaderboard
+`GET /users/leaderboard`
 
-Request format:
+Returns the top 10 users by points.
 
-- `multipart/form-data`
-- Required file field: `image`
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": [
+    { "username": "hero1", "points": 1200 },
+    { "username": "hero2", "points": 950 }
+  ]
+}
+```
 
-Response data includes:
+### 4. Get Profile
+`GET /users/profile` (Auth Required)
 
-- `classification`
-- `pointsEarned`
-- `scanId`
-- `newTotalPoints`
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "username": "greenHero",
+    "email": "hero@example.com",
+    "points": 150,
+    "badges": ["first_scan"],
+    "impactStats": {
+      "treesSaved": 0.5,
+      "plasticDiverted": 12,
+      "co2Reduced": 4.2
+    }
+  }
+}
+```
 
-Classification categories are `Recyclable`, `Compost`, `E-Waste`, `Landfill`, `Special`, and `Unknown`.
+---
 
-## Centers
+## Waste Scanning (Gemini AI)
 
-| Method | Path | Auth | Purpose |
-| --- | --- | --- | --- |
-| `GET` | `/api/centers/nearby?lat=6.9271&lng=79.8612&radius=5000` | No | Find nearby recycling centers |
-| `POST` | `/api/centers/seed` | No | Testing helper that replaces centers with dummy Colombo data |
+### 5. Scan & Classify Waste
+`POST /scan` (Auth Required)
 
-`lat` and `lng` are required. `radius` is optional and defaults to `5000` meters.
+Upload an image to identify waste type and earn points.
+
+**Request:** `multipart/form-data`
+- `image`: File (Required)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "itemName": "Plastic Bottle",
+    "category": "Recyclable",
+    "prepSteps": ["Remove cap", "Rinse", "Crush"],
+    "pointsEarned": 10,
+    "newTotalPoints": 160
+  }
+}
+```
+
+---
+
+## Recycling Centers
+
+### 6. Find Nearby Centers
+`GET /centers/nearby`
+
+Find centers near a specific location.
+
+**Query Parameters:**
+- `lat`: Number (Required) - e.g., `6.9271`
+- `lng`: Number (Required) - e.g., `79.8612`
+- `radius`: Number (Optional) - default `5000` (meters)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "count": 2,
+  "data": [
+    {
+      "name": "Colombo Recycling Hub",
+      "address": "123 Main St",
+      "location": { "type": "Point", "coordinates": [79.8612, 6.9271] },
+      "acceptedMaterials": ["Recyclable", "E-Waste"]
+    }
+  ]
+}
+```
+
+---
 
 ## Education
 
-| Method | Path | Auth | Purpose |
-| --- | --- | --- | --- |
-| `GET` | `/api/education/daily-tip` | No | Return a random recycling tip |
-| `GET` | `/api/education/search?q=recycling` | No | Search tip titles and content |
+### 7. Get Daily Tip
+`GET /education/daily-tip`
 
-## Docs
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "data": {
+    "title": "Rinse before recycling",
+    "content": "Food residue can contaminate recycling batches."
+  }
+}
+```
 
-| Method | Path | Purpose |
-| --- | --- | --- |
-| `GET` | `/api/docs` | Swagger UI |
-| `GET` | `/api/docs.json` | OpenAPI JSON |
+---
 
-Use the Swagger UI for the most detailed route-level schemas.
+## API Documentation (Swagger)
+
+The interactive Swagger UI is available at:
+- **UI**: `https://qlony.com/api/docs`
+- **OpenAPI JSON**: `https://qlony.com/api/docs.json`

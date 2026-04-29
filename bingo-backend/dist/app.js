@@ -206,7 +206,7 @@ app.get("/api/docs.json", (req, res) => {
     res.send(swaggerSpec);
 });
 app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "../uploads")));
-const frontendPath = path_1.default.join(__dirname, "../../bingo-frontend/dist");
+const frontendPath = path_1.default.join(__dirname, "../../bingo-admin-dashboard/dist");
 app.use(express_1.default.static(frontendPath));
 app.use("/api/scan", scan_routes_1.default);
 app.use("/api/users", user_routes_1.default);
