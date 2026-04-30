@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import fs from 'fs/promises';
+import path from 'path';
 
 import { AuthRequest } from '../middleware/auth';
 import ScanHistory from '../models/ScanHistory';
@@ -14,8 +15,26 @@ export const scanWaste = async (req: AuthRequest, res: Response) => {
 
         const user = req.user;
         filePath = req.file.path;
-        const mimeType = req.file.mimetype;
+        let mimeType = req.file.mimetype;
         const filename = req.file.filename;
+
+        // Correct MIME type if it's application/octet-stream
+        if (mimeType === 'application/octet-stream') {
+            const ext = path.extname(filename).toLowerCase();
+            if (ext === '.jpg' || ext === '.jpeg') {
+                mimeType = 'image/jpeg';
+            } else if (ext === '.png') {
+                mimeType = 'image/png';
+            } else if (ext === '.webp') {
+                mimeType = 'image/webp';
+            } else if (ext === '.heic' || ext === '.heif') {
+                mimeType = 'image/heic';
+            } else {
+                // Default to image/jpeg for most photos if unknown
+                mimeType = 'image/jpeg';
+            }
+        }
+
         const classification = await analyzeWasteImage(filePath, mimeType);
 
         try {

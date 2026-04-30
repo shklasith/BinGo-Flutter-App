@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.scanWaste = void 0;
 const promises_1 = __importDefault(require("fs/promises"));
+const path_1 = __importDefault(require("path"));
 const ScanHistory_1 = __importDefault(require("../models/ScanHistory"));
 const gemini_service_1 = require("../services/gemini.service");
 const scanWaste = async (req, res) => {
@@ -15,8 +16,28 @@ const scanWaste = async (req, res) => {
         }
         const user = req.user;
         filePath = req.file.path;
-        const mimeType = req.file.mimetype;
+        let mimeType = req.file.mimetype;
         const filename = req.file.filename;
+        // Correct MIME type if it's application/octet-stream
+        if (mimeType === 'application/octet-stream') {
+            const ext = path_1.default.extname(filename).toLowerCase();
+            if (ext === '.jpg' || ext === '.jpeg') {
+                mimeType = 'image/jpeg';
+            }
+            else if (ext === '.png') {
+                mimeType = 'image/png';
+            }
+            else if (ext === '.webp') {
+                mimeType = 'image/webp';
+            }
+            else if (ext === '.heic' || ext === '.heif') {
+                mimeType = 'image/heic';
+            }
+            else {
+                // Default to image/jpeg for most photos if unknown
+                mimeType = 'image/jpeg';
+            }
+        }
         const classification = await (0, gemini_service_1.analyzeWasteImage)(filePath, mimeType);
         try {
             await promises_1.default.unlink(filePath);
